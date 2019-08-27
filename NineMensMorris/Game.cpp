@@ -7,6 +7,9 @@ Game::Game()
      button_quit(sf::Vector2f(460.0f, 520.0f), "QUIT")
 {
 	background.setSize(sf::Vector2f(600.0f, 600.0f));
+	sf::Texture backgroundTexture;
+	backgroundTexture.loadFromFile("./textures/background.png");
+	setBackground(backgroundTexture);
 }
 
 void Game::setBackground(sf::Texture texture)
