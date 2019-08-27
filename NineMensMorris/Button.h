@@ -9,9 +9,10 @@ enum class ButtonState
 class Button
 {
 public:
+	Button();
 	Button(sf::Vector2f position, sf::String text);
 
-	void update(sf::Vector2i(mousePosition));
+	void update(sf::RenderWindow &window);
 	void draw(sf::RenderWindow &window);
 
 	bool isJustPressed();

@@ -1,6 +1,6 @@
 #include "Button.h"
 
-
+Button::Button(){}
 
 Button::Button(sf::Vector2f position, sf::String text)
 {
@@ -25,9 +25,11 @@ Button::Button(sf::Vector2f position, sf::String text)
 	setPosition(position);
 }
 
-void Button::update(sf::Vector2i(mousePosition))
+void Button::update(sf::RenderWindow &window)
 {
 	//hover and press state check
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+	justPressed = false;
 	sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
 	ButtonState newState = ButtonState::NORMAL;
 
