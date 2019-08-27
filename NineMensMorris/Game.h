@@ -5,7 +5,6 @@ class Game
 {
 public:
 	Game();
-	~Game();
 	void draw(sf::RenderWindow &window);
 	void setBackground(sf::Texture texture);
 
