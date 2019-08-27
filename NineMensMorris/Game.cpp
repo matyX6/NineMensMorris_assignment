@@ -6,9 +6,9 @@ Game::Game()
 	:button_reset(sf::Vector2f(20.0f, 520.0f), "RESTART"),
      button_quit(sf::Vector2f(460.0f, 520.0f), "QUIT")
 {
-	background.setSize(sf::Vector2f(600.0f, 600.0f));
-	sf::Texture backgroundTexture;
 	backgroundTexture.loadFromFile("./textures/background.png");
+
+	background.setSize(sf::Vector2f(600.0f, 600.0f));
 	setBackground(backgroundTexture);
 }
 
@@ -25,7 +25,7 @@ void Game::update(sf::RenderWindow &window)
 
 	if (button_reset.isJustPressed())
 	{
-		std::cout << "Reset pressed!\n";
+		std::cout << "Restart game!\n";
 	}
 	if (button_quit.isJustPressed())
 	{
