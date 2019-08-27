@@ -1,9 +1,7 @@
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 int main()
 {
-	std::cout << "Hello world!" << std::endl;
-
-	system("PAUSE");
 	return 0;
 }
