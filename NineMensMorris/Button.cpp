@@ -4,33 +4,57 @@
 
 Button::Button(sf::Vector2f position, sf::String text)
 {
-	//set button texture
-	sf::Texture backgroundTexture;
-	backgroundTexture.loadFromFile("./textures/button.png");
-	setBackground(backgroundTexture);
+
+	//load textures and resources
+	textFont.loadFromFile("./fonts/Splatch.ttf");
+	textureNormal.loadFromFile("./textures/button-normal.png");
+	textureHover.loadFromFile("./textures/button-hover.png");
+	texturePressed.loadFromFile("./textures/button-pressed.png");
 
 	//set button font
-	textFont.loadFromFile("./fonts/Splatch.ttf");
 	this->text.setFont(textFont);
 
 	//button background
 	background.setSize(sf::Vector2f(120.0f, 60.0f));
 
-	setPosition(position);
+	//set state
+	justPressed = false;
+	setState(ButtonState::NORMAL);
+
 	setText(text);
-
+	setPosition(position);
 }
 
-void Button::update()
+void Button::update(sf::Vector2i(mousePosition))
 {
-	//set text position by button background
-	text.setPosition(background.getPosition());
+	//hover and press state check
+	sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
+	ButtonState newState = ButtonState::NORMAL;
+
+	if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat)))
+	{
+		newState = ButtonState::HOVER;
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+		{
+			newState = ButtonState::PRESSED;
+		}
+	}
+
+	if (state != newState)
+	{
+		setState(newState);
+	}
 }
 
-void Button::setBackground(sf::Texture texture)
+bool Button::isJustPressed()
 {
-	this->backgroundTexture = texture;
-	background.setTexture(&backgroundTexture);
+	return justPressed;
+}
+
+void Button::setBackground(sf::Texture &texture)
+{
+	background.setTexture(&texture);
 }
 
 sf::Vector2f Button::getPosition()
@@ -41,13 +65,16 @@ sf::Vector2f Button::getPosition()
 void Button::setPosition(sf::Vector2f position)
 {
 	this->position = position;
+
 	background.setPosition(position);
-	text.setPosition(position);
+
+	centerText();
 }
 
 void Button::setText(sf::String string)
 {
 	text.setString(string);
+	centerText();
 	text.setCharacterSize(16.0f);
 }
 
@@ -56,3 +83,35 @@ void Button::draw(sf::RenderWindow &window)
 	window.draw(background);
 	window.draw(text);
 }
+
+void Button::setState(ButtonState state)
+{
+	this->state = state;
+
+	switch (state)
+	{
+	case ButtonState::NORMAL:
+		setBackground(textureNormal);
+		break;
+	case ButtonState::HOVER:
+		setBackground(textureHover);
+		break;
+	case ButtonState::PRESSED:
+		setBackground(texturePressed);
+		justPressed = true;
+		break;
+	default:
+		break;
+	}
+}
+
+void Button::centerText() 
+{
+	sf::Vector2f textureHalfSize(background.getGlobalBounds().width * 0.5f,
+		background.getGlobalBounds().height * 0.5f);
+	sf::Vector2f textHalfSize(text.getGlobalBounds().width * 0.5f,
+		text.getGlobalBounds().height * 0.5f);
+	sf::Vector2f offsetFix(0.0f, text.getLocalBounds().top);
+	text.setPosition(position + textureHalfSize - textHalfSize - offsetFix);
+}
+

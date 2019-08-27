@@ -5,6 +5,7 @@
 
 int main()
 {
+	const sf::Vector2i WINDOW_HEADER_OFFSET(8, 32);
 	sf::RenderWindow window(sf::VideoMode(600, 600), "NineMensMorris", sf::Style::Close);
 	Game game;
 	{
@@ -28,9 +29,15 @@ int main()
 			}
 		}
 
+		if (button_reset.isJustPressed())
+		{
+			std::cout << "Restart game!\n";
+		}
+
 		//updates
-		button_reset.update();
-		button_quit.update();
+		sf::Vector2i mousePosition = sf::Mouse::getPosition() - window.getPosition() - WINDOW_HEADER_OFFSET;
+		button_reset.update(mousePosition);
+		button_quit.update(mousePosition);
 
 
 		//draw
