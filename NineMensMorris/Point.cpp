@@ -80,6 +80,7 @@ void Point::setState(PointState state)
 		setBackground(Resources::get().texture(TextureResourceType::POINT_PRESSED));
 		justPressed = true;
 		soundPressed.play();
+		disable();
 		break;
 	default:
 		break;
