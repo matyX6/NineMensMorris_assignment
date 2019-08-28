@@ -1,5 +1,6 @@
 #pragma once
 #include "Resources.h"
+#include "Coin.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>

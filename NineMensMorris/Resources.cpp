@@ -21,6 +21,10 @@ Resources::Resources()
 	texturePointNormal.loadFromFile("./textures/point-normal.png");
 	texturePointHover.loadFromFile("./textures/point-hover.png");
 	texturePointPressed.loadFromFile("./textures/point-pressed.png");
+	textureCoinWhite.loadFromFile("./textures/coin1.png");
+	textureCoinBlack.loadFromFile("./textures/coin2.png");
+	textureCoinSelected.loadFromFile("./textures/coin-selected.png");
+
 
 	// load font resources
 	fontMain.loadFromFile("./fonts/Splatch.ttf");
@@ -57,6 +61,13 @@ sf::Texture & Resources::texture(TextureResourceType type)
 		return texturePointHover;
 	case TextureResourceType::POINT_PRESSED:
 		return texturePointPressed;
+	case TextureResourceType::COIN_WHITE:
+		return textureCoinWhite;
+	case TextureResourceType::COIN_BLACK:
+		return textureCoinBlack;
+	case TextureResourceType::COIN_SELECTED:
+		return textureCoinSelected;
+
 	}
 }
 

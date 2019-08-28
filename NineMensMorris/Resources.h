@@ -18,7 +18,10 @@ enum class TextureResourceType
 	BUTTON_HOVER,
 	POINT_NORMAL,
 	POINT_HOVER,
-	POINT_PRESSED
+	POINT_PRESSED,
+	COIN_WHITE,
+	COIN_BLACK,
+	COIN_SELECTED
 };
 
 enum class FontResourceType
@@ -39,6 +42,9 @@ private:
 	sf::Texture texturePointNormal;
 	sf::Texture texturePointHover;
 	sf::Texture texturePointPressed;
+	sf::Texture textureCoinWhite;
+	sf::Texture textureCoinBlack;
+	sf::Texture textureCoinSelected;
 
 	sf::Font fontMain;
 

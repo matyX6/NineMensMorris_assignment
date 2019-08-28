@@ -102,6 +102,46 @@ Board::Board(sf::Vector2f position)
 	points.push_back(p21);
 	points.push_back(p22);
 	points.push_back(p23);
+
+	// create coins
+	Coin *w1 = new Coin(1, sf::Vector2f(50.0f, 140.0f));
+	Coin *w2 = new Coin(1, sf::Vector2f(50.0f, 160.0f));
+	Coin *w3 = new Coin(1, sf::Vector2f(50.0f, 180.0f));
+	Coin *w4 = new Coin(1, sf::Vector2f(50.0f, 200.0f));
+	Coin *w5 = new Coin(1, sf::Vector2f(50.0f, 220.0f));
+	Coin *w6 = new Coin(1, sf::Vector2f(50.0f, 240.0f));
+	Coin *w7 = new Coin(1, sf::Vector2f(50.0f, 260.0f));
+	Coin *w8 = new Coin(1, sf::Vector2f(50.0f, 280.0f));
+	Coin *w9 = new Coin(1, sf::Vector2f(50.0f, 300.0f));
+	Coin *b1 = new Coin(2, sf::Vector2f(550.0f, 140.0f));
+	Coin *b2 = new Coin(2, sf::Vector2f(550.0f, 160.0f));
+	Coin *b3 = new Coin(2, sf::Vector2f(550.0f, 180.0f));
+	Coin *b4 = new Coin(2, sf::Vector2f(550.0f, 200.0f));
+	Coin *b5 = new Coin(2, sf::Vector2f(550.0f, 220.0f));
+	Coin *b6 = new Coin(2, sf::Vector2f(550.0f, 240.0f));
+	Coin *b7 = new Coin(2, sf::Vector2f(550.0f, 260.0f));
+	Coin *b8 = new Coin(2, sf::Vector2f(550.0f, 280.0f));
+	Coin *b9 = new Coin(2, sf::Vector2f(550.0f, 300.0f));
+
+	// store coins
+	coinsWhite.push_back(w1);
+	coinsWhite.push_back(w2);
+	coinsWhite.push_back(w3);
+	coinsWhite.push_back(w4);
+	coinsWhite.push_back(w5);
+	coinsWhite.push_back(w6);
+	coinsWhite.push_back(w7);
+	coinsWhite.push_back(w8);
+	coinsWhite.push_back(w9);
+	coinsWhite.push_back(b1);
+	coinsWhite.push_back(b2);
+	coinsWhite.push_back(b3);
+	coinsWhite.push_back(b4);
+	coinsWhite.push_back(b5);
+	coinsWhite.push_back(b6);
+	coinsWhite.push_back(b7);
+	coinsWhite.push_back(b8);
+	coinsWhite.push_back(b9);
 }
 
 void Board::update(sf::RenderWindow &window)
@@ -109,6 +149,14 @@ void Board::update(sf::RenderWindow &window)
 	for (auto point : points)
 	{
 		point->update(window);
+	}
+	for (auto coin : coinsWhite)
+	{
+		coin->update(window);
+	}
+	for (auto coin : coinsBlack)
+	{
+		coin->update(window);
 	}
 }
 
@@ -119,6 +167,14 @@ void Board::draw(sf::RenderWindow &window)
 	for (auto point : points)
 	{
 		point->draw(window);
+	}
+	for (auto coin : coinsWhite)
+	{
+		coin->draw(window);
+	}
+	for (auto coin : coinsBlack)
+	{
+		coin->draw(window);
 	}
 }
 

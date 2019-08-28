@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Point.h"
+#include "Coin.h"
 #include <vector>
 
 class Board
@@ -8,6 +9,8 @@ class Board
 private:
 	sf::Vector2f position;
 	std::vector<Point*> points;
+	std::vector<Coin*> coinsWhite;
+	std::vector<Coin*> coinsBlack;
 	sf::RectangleShape background;
 
 public:
