@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Button.h"
+#include "Board.h"
 
 class Game
 {
@@ -14,6 +15,7 @@ private:
 	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 
+	Board board;
 	Button button_reset;
 	Button button_quit;
 };
