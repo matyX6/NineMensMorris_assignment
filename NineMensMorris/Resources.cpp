@@ -18,6 +18,9 @@ Resources::Resources()
 	textureButtonNormal.loadFromFile("./textures/button-normal.png");
 	textureButtonHover.loadFromFile("./textures/button-hover.png");
 	textureButtonPressed.loadFromFile("./textures/button-pressed.png");
+	texturePointNormal.loadFromFile("./textures/point-normal.png");
+	texturePointHover.loadFromFile("./textures/point-hover.png");
+	texturePointPressed.loadFromFile("./textures/point-pressed.png");
 
 	// load font resources
 	fontMain.loadFromFile("./fonts/Splatch.ttf");
@@ -48,6 +51,12 @@ sf::Texture & Resources::texture(TextureResourceType type)
 		return textureButtonPressed;
 	case TextureResourceType::BUTTON_HOVER:
 		return textureButtonHover;
+	case TextureResourceType::POINT_NORMAL:
+		return texturePointNormal;
+	case TextureResourceType::POINT_HOVER:
+		return texturePointHover;
+	case TextureResourceType::POINT_PRESSED:
+		return texturePointPressed;
 	}
 }
 

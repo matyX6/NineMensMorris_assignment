@@ -1,5 +1,4 @@
 #include "Button.h"
-#include "Resources.h"
 
 Button::Button(){}
 
