@@ -22,6 +22,9 @@ public:
 	bool isJustPressed();
 	void setState(PointState state);
 	void setBackground(sf::Texture &texture);
+	void enable();
+	void disable();
+	bool isEnabled();
 
 	void printConnections()
 	{
@@ -40,5 +43,6 @@ private:
 	PointState state;
 	bool justPressed;
 	sf::Sound soundPressed;
+	bool disabled;
 };
 

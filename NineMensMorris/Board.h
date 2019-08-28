@@ -18,4 +18,7 @@ public:
 	void addPoint(int id, sf::Vector2f position);
 	void setBackground(sf::Texture &texture);
 	void setPosition(sf::Vector2f position);
+	void disableAllPoints();
+	void enableAllPoints();
+	void reset();
 };

@@ -14,22 +14,25 @@ Point::Point(int id, sf::Vector2f position)
 
 void Point::update(sf::RenderWindow &window)
 {
-	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-	justPressed = false;
-	sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
-	PointState newState = PointState::NORMAL;
-	if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat)))
+	if (!disabled)
 	{
-		newState = PointState::HOVER;
-
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+		sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+		justPressed = false;
+		sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
+		PointState newState = PointState::NORMAL;
+		if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat)))
 		{
-			newState = PointState::PRESSED;
+			newState = PointState::HOVER;
+
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+			{
+				newState = PointState::PRESSED;
+			}
 		}
-	}
-	if (state != newState)
-	{
-		setState(newState);
+		if (state != newState)
+		{
+			setState(newState);
+		}
 	}
 }
 
@@ -85,6 +88,23 @@ void Point::setState(PointState state)
 void Point::setBackground(sf::Texture &texture)
 {
 	background.setTexture(&texture);
+}
+
+void Point::enable()
+{
+	disabled = false;
+	setBackground(Resources::get().texture(TextureResourceType::POINT_NORMAL));;
+}
+
+void Point::disable()
+{
+	disabled = true;
+	setBackground(Resources::get().texture(TextureResourceType::POINT_PRESSED));
+}
+
+bool Point::isEnabled()
+{
+	return !disabled;
 }
 
 

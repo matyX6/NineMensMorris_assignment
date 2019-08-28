@@ -122,13 +122,6 @@ void Board::draw(sf::RenderWindow &window)
 	}
 }
 
-void Board::addPoint(int id, sf::Vector2f position)
-{
-	Point *p = new Point(id, position);
-	points.push_back(p);
-	std::cout << "Point " << p->getId() << " added to board!\n";
-}
-
 void Board::setBackground(sf::Texture &texture)
 {
 	background.setTexture(&texture);
@@ -139,4 +132,25 @@ void Board::setPosition(sf::Vector2f position)
 	this->position = position;
 
 	background.setPosition(position);
+}
+
+void Board::disableAllPoints()
+{
+	for (auto point : points)
+	{
+		point->disable();
+	}
+}
+
+void Board::enableAllPoints()
+{
+	for (auto point : points)
+	{
+		point->enable();
+	}
+}
+
+void Board::reset()
+{
+	enableAllPoints();
 }

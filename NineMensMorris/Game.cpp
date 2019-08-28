@@ -15,7 +15,8 @@ Game::Game()
 
 Game::~Game()
 {
-	for (auto button : buttons) {
+	for (auto button : buttons) 
+	{
 		delete button;
 	}
 }
@@ -23,22 +24,25 @@ Game::~Game()
 void Game::update(sf::RenderWindow &window)
 {
 	board.update(window);
-	for (auto button : buttons) {
+	for (auto button : buttons) 
+	{
 		button->update(window);
 	}
 
 	// check button presses
-	for (auto button : buttons) {
+	for (auto button : buttons) 
+	{
 		// ignore if button not pressed
 		if (!button->isJustPressed()) { continue; }
 
 		// make decision based on button text
 		std::string text = button->getText().toAnsiString();
-		if (text == "RESTART") {
-			std::cout << "Restart Game!\n";
+		if (text == "RESTART") 
+		{
+			board.reset();
 		}
-		else if (text == "QUIT") {
-			std::cout << "Quit game!\n";
+		else if (text == "QUIT") 
+		{
 			window.close();
 		}
 	}
@@ -49,7 +53,8 @@ void Game::draw(sf::RenderWindow &window)
 	window.draw(background);
 
 	board.draw(window);
-	for (auto button : buttons) {
+	for (auto button : buttons) 
+	{
 		button->draw(window);
 	}
 }

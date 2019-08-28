@@ -25,14 +25,17 @@ void Button::update(sf::RenderWindow &window)
 	justPressed = false;
 	sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
 	ButtonState newState = ButtonState::NORMAL;
-	if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat))) {
+	if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat))) 
+	{
 		newState = ButtonState::HOVER;
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) 
+		{
 			newState = ButtonState::PRESSED;
 		}
 	}
-	if (state != newState) {
+	if (state != newState) 
+	{
 		setState(newState);
 	}
 }
@@ -78,7 +81,8 @@ sf::String Button::getText()
 	return text.getString();
 }
 
-void Button::setState(ButtonState state) {
+void Button::setState(ButtonState state) 
+{
 	this->state = state;
 
 	switch (state)
@@ -99,7 +103,8 @@ void Button::setState(ButtonState state) {
 	}
 }
 
-void Button::centerText() {
+void Button::centerText() 
+{
 	sf::Vector2f textureHalfSize(background.getGlobalBounds().width * 0.5f,
 		background.getGlobalBounds().height * 0.5f);
 	sf::Vector2f textHalfSize(text.getGlobalBounds().width * 0.5f,
