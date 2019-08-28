@@ -6,6 +6,8 @@ Board::Board(sf::Vector2f position)
 {
 	background.setSize(sf::Vector2f(400.0f, 400.0f));
 	setBackground(Resources::get().texture(TextureResourceType::BOARD));
+
+	selectedCoin = nullptr;
 	setPosition(position);
 
 	// creating points
@@ -104,24 +106,24 @@ Board::Board(sf::Vector2f position)
 	points.push_back(p23);
 
 	// create coins
-	Coin *w1 = new Coin(1, sf::Vector2f(50.0f, 140.0f));
-	Coin *w2 = new Coin(1, sf::Vector2f(50.0f, 160.0f));
-	Coin *w3 = new Coin(1, sf::Vector2f(50.0f, 180.0f));
-	Coin *w4 = new Coin(1, sf::Vector2f(50.0f, 200.0f));
-	Coin *w5 = new Coin(1, sf::Vector2f(50.0f, 220.0f));
-	Coin *w6 = new Coin(1, sf::Vector2f(50.0f, 240.0f));
-	Coin *w7 = new Coin(1, sf::Vector2f(50.0f, 260.0f));
-	Coin *w8 = new Coin(1, sf::Vector2f(50.0f, 280.0f));
-	Coin *w9 = new Coin(1, sf::Vector2f(50.0f, 300.0f));
-	Coin *b1 = new Coin(2, sf::Vector2f(550.0f, 140.0f));
-	Coin *b2 = new Coin(2, sf::Vector2f(550.0f, 160.0f));
-	Coin *b3 = new Coin(2, sf::Vector2f(550.0f, 180.0f));
-	Coin *b4 = new Coin(2, sf::Vector2f(550.0f, 200.0f));
-	Coin *b5 = new Coin(2, sf::Vector2f(550.0f, 220.0f));
-	Coin *b6 = new Coin(2, sf::Vector2f(550.0f, 240.0f));
-	Coin *b7 = new Coin(2, sf::Vector2f(550.0f, 260.0f));
-	Coin *b8 = new Coin(2, sf::Vector2f(550.0f, 280.0f));
-	Coin *b9 = new Coin(2, sf::Vector2f(550.0f, 300.0f));
+	Coin *w1 = new Coin(0, sf::Vector2f(50.0f, 140.0f));
+	Coin *w2 = new Coin(0, sf::Vector2f(50.0f, 160.0f));
+	Coin *w3 = new Coin(0, sf::Vector2f(50.0f, 180.0f));
+	Coin *w4 = new Coin(0, sf::Vector2f(50.0f, 200.0f));
+	Coin *w5 = new Coin(0, sf::Vector2f(50.0f, 220.0f));
+	Coin *w6 = new Coin(0, sf::Vector2f(50.0f, 240.0f));
+	Coin *w7 = new Coin(0, sf::Vector2f(50.0f, 260.0f));
+	Coin *w8 = new Coin(0, sf::Vector2f(50.0f, 280.0f));
+	Coin *w9 = new Coin(0, sf::Vector2f(50.0f, 300.0f));
+	Coin *b1 = new Coin(1, sf::Vector2f(550.0f, 140.0f));
+	Coin *b2 = new Coin(1, sf::Vector2f(550.0f, 160.0f));
+	Coin *b3 = new Coin(1, sf::Vector2f(550.0f, 180.0f));
+	Coin *b4 = new Coin(1, sf::Vector2f(550.0f, 200.0f));
+	Coin *b5 = new Coin(1, sf::Vector2f(550.0f, 220.0f));
+	Coin *b6 = new Coin(1, sf::Vector2f(550.0f, 240.0f));
+	Coin *b7 = new Coin(1, sf::Vector2f(550.0f, 260.0f));
+	Coin *b8 = new Coin(1, sf::Vector2f(550.0f, 280.0f));
+	Coin *b9 = new Coin(1, sf::Vector2f(550.0f, 300.0f));
 
 	// store coins
 	coinsWhite.push_back(w1);
@@ -147,6 +149,23 @@ Board::Board(sf::Vector2f position)
 
 void Board::update(sf::RenderWindow &window)
 {
+	justPlacedCoin = false;
+
+	//check point clicks
+
+	for (auto point : points)
+	{
+		if (point->isJustPressed())
+		{
+			if (selectedCoin != nullptr)
+			{
+				selectedCoin->setPosition(point->getPosition());
+				selectedCoin->deselect();
+				selectedCoin = nullptr;
+				justPlacedCoin = true;
+			}
+		}
+	}
 	for (auto point : points)
 	{
 		point->update(window);
@@ -207,8 +226,25 @@ void Board::enableAllPoints()
 	}
 }
 
+void Board::selectCoinFromStack(int playerIndex, int coinIndex)
+{
+	switch (playerIndex)
+	{
+	case 1:
+		selectedCoin = coinsBlack[coinsBlack.size() - 1 - coinIndex];
+		break;
+	case 0:
+		selectedCoin = coinsWhite[coinsWhite.size() - 1 - coinIndex];
+		break;
+	default:
+		break;
+	}
+	selectedCoin->select();
+}
+
 void Board::reset()
 {
+	//reset coins
 	for (auto coin : coinsWhite)
 	{
 		coin->goHome();
@@ -221,18 +257,15 @@ void Board::reset()
 		coin->disable();
 		coin->deselect();
 	}
-	enableAllPoints();
 
-	currentPlayerIndex = rand() % 2 + 1;
-	std::cout << currentPlayerIndex;
-	switch (currentPlayerIndex)
-	{
-		case 2:
-			coinsBlack.back()->select();
-			break;
-		case 1:
-		default:
-			coinsWhite.back()->select();
-			break;
-	}
+	//reset points
+	enableAllPoints();
+	selectedCoin = nullptr;
+
+	std::cout << "Board reset\n";
+}
+
+bool Board::hasJustPlacedCoin()
+{
+	return justPlacedCoin;
 }

@@ -11,6 +11,16 @@ enum class PointState
 
 class Point
 {
+private:
+	int id;
+	sf::Vector2f position;
+	std::vector<Point *> connectedPoints;
+	sf::RectangleShape background;
+	PointState state;
+	bool justPressed;
+	sf::Sound soundPressed;
+	bool disabled;
+
 public:
 	Point(int id, sf::Vector2f position);
 	void update(sf::RenderWindow &window);
@@ -25,6 +35,8 @@ public:
 	void enable();
 	void disable();
 	bool isEnabled();
+	sf::Vector2f getPosition();
+	void moveTo(sf::Vector2f position);
 
 	void printConnections()
 	{
@@ -34,15 +46,5 @@ public:
 		}
 		std::cout << "\n";
 	}
-	
-private:
-	int id;
-	sf::Vector2f position;
-	std::vector<Point *> connectedPoints;
-	sf::RectangleShape background;
-	PointState state;
-	bool justPressed;
-	sf::Sound soundPressed;
-	bool disabled;
 };
 

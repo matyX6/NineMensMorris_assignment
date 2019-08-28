@@ -12,8 +12,8 @@ Coin::Coin(int playerIndex, sf::Vector2f position)
 	setPlayerIndex(playerIndex);
 	setPosition(position);
 	homePosition = position;
-	selected = false;
-	disabled = false;
+	deselect();
+	disable();
 
 }
 
@@ -112,10 +112,10 @@ void Coin::setPlayerIndex(int playerIndex)
 
 	switch (playerIndex)
 	{
-	case 1: // white
+	case 0: // white
 		background.setTexture(&Resources::get().texture(TextureResourceType::COIN_WHITE));
 		break;
-	case 2: // black
+	case 1: // black
 		background.setTexture(&Resources::get().texture(TextureResourceType::COIN_BLACK));
 		break;
 	default:

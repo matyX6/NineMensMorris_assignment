@@ -10,14 +10,15 @@ Point::Point(int id, sf::Vector2f position)
 	soundPressed.setBuffer(Resources::get().sound(AudioResourceType::BUTTON_PRESSED));
 	this->id = id;
 	setPosition(position);
+	disable();
 }
 
 void Point::update(sf::RenderWindow &window)
 {
+	justPressed = false;
 	if (!disabled)
 	{
 		sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-		justPressed = false;
 		sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
 		PointState newState = PointState::NORMAL;
 		if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat)))
@@ -105,6 +106,16 @@ void Point::disable()
 bool Point::isEnabled()
 {
 	return !disabled;
+}
+
+sf::Vector2f Point::getPosition()
+{
+	return position;
+}
+
+void Point::moveTo(sf::Vector2f position)
+{
+	setPosition(position);
 }
 
 
