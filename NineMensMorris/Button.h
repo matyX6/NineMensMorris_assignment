@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <iostream>
 
 enum class ButtonState
 {
@@ -35,6 +37,7 @@ private:
 	sf::Texture textureNormal;
 	sf::Texture textureHover;
 	sf::Texture texturePressed;
+	sf::Sound soundPressed;
 	sf::Font textFont;
 
 	//method

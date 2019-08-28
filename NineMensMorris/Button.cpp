@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "Resources.h"
 
 Button::Button(){}
 
@@ -10,6 +11,8 @@ Button::Button(sf::Vector2f position, sf::String text)
 	textureNormal.loadFromFile("./textures/button-normal.png");
 	textureHover.loadFromFile("./textures/button-hover.png");
 	texturePressed.loadFromFile("./textures/button-pressed.png");
+
+	soundPressed.setBuffer(Resources::get().sound(AudioResourceType::BUTTON_PRESSED));
 
 	//set button font
 	this->text.setFont(textFont);
@@ -101,6 +104,7 @@ void Button::setState(ButtonState state)
 	case ButtonState::PRESSED:
 		setBackground(texturePressed);
 		justPressed = true;
+		soundPressed.play();
 		break;
 	default:
 		break;
