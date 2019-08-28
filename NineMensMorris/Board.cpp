@@ -133,15 +133,16 @@ Board::Board(sf::Vector2f position)
 	coinsWhite.push_back(w7);
 	coinsWhite.push_back(w8);
 	coinsWhite.push_back(w9);
-	coinsWhite.push_back(b1);
-	coinsWhite.push_back(b2);
-	coinsWhite.push_back(b3);
-	coinsWhite.push_back(b4);
-	coinsWhite.push_back(b5);
-	coinsWhite.push_back(b6);
-	coinsWhite.push_back(b7);
-	coinsWhite.push_back(b8);
-	coinsWhite.push_back(b9);
+
+	coinsBlack.push_back(b1);
+	coinsBlack.push_back(b2);
+	coinsBlack.push_back(b3);
+	coinsBlack.push_back(b4);
+	coinsBlack.push_back(b5);
+	coinsBlack.push_back(b6);
+	coinsBlack.push_back(b7);
+	coinsBlack.push_back(b8);
+	coinsBlack.push_back(b9);
 }
 
 void Board::update(sf::RenderWindow &window)
@@ -208,5 +209,30 @@ void Board::enableAllPoints()
 
 void Board::reset()
 {
+	for (auto coin : coinsWhite)
+	{
+		coin->goHome();
+		coin->disable();
+		coin->deselect();
+	}
+	for (auto coin : coinsBlack)
+	{
+		coin->goHome();
+		coin->disable();
+		coin->deselect();
+	}
 	enableAllPoints();
+
+	currentPlayerIndex = rand() % 2 + 1;
+	std::cout << currentPlayerIndex;
+	switch (currentPlayerIndex)
+	{
+		case 2:
+			coinsBlack.back()->select();
+			break;
+		case 1:
+		default:
+			coinsWhite.back()->select();
+			break;
+	}
 }

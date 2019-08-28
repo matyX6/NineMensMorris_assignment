@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Button.h"
 #include "Resources.h"
+#include <time.h>
 
 void instanceSingletons()
 {
@@ -12,6 +13,8 @@ void instanceSingletons()
 int main()
 {
 	instanceSingletons();
+	srand(time(NULL));
+
 	sf::RenderWindow window(sf::VideoMode(600, 600), "NineMensMorris", sf::Style::Close);
 
 	Game game;

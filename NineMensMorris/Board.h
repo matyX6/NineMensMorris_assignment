@@ -12,6 +12,7 @@ private:
 	std::vector<Coin*> coinsWhite;
 	std::vector<Coin*> coinsBlack;
 	sf::RectangleShape background;
+	int currentPlayerIndex;
 
 public:
 	Board(sf::Vector2f position);

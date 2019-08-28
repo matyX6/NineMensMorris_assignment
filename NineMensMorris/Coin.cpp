@@ -4,8 +4,8 @@ Coin::Coin(int playerIndex, sf::Vector2f position)
 {
 	background.setSize(sf::Vector2f(30.0f, 30.0f));
 	background.setOrigin(sf::Vector2f(15.0f, 15.0f));
-	textureSelected.setSize(sf::Vector2f(40.f, 40.0f));
-	textureSelected.setOrigin(sf::Vector2f(20.0f, 20.0f));
+	textureSelected.setSize(sf::Vector2f(60.f, 60.0f));
+	textureSelected.setOrigin(sf::Vector2f(30.0f, 30.0f));
 	background.setTexture(&Resources::get().texture(TextureResourceType::COIN_WHITE));
 	textureSelected.setTexture(&Resources::get().texture(TextureResourceType::COIN_SELECTED));
 
@@ -84,6 +84,21 @@ void Coin::disable()
 bool Coin::isEnabled()
 {
 	return !disabled;
+}
+
+void Coin::select()
+{
+	selected = true;
+}
+
+void Coin::deselect()
+{
+	selected = false;
+}
+
+bool Coin::isSelected()
+{
+	return selected;
 }
 
 void Coin::goHome()

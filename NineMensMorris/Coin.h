@@ -27,6 +27,9 @@ public:
 	void enable();
 	void disable();
 	bool isEnabled();
+	void select();
+	void deselect();
+	bool isSelected();
 	void goHome();
 };
 
