@@ -1,37 +1,37 @@
 #include "Board.h"
+#include "Resources.h"
 #include <iostream>
 
 Board::Board(sf::Vector2f position)
 {
-	// loading resources
-	backgroundTexture.loadFromFile("./textures/board.png");
-
 	background.setSize(sf::Vector2f(400.0f, 400.0f));
-	setBackground(backgroundTexture);
-
+	setBackground(Resources::get().texture(TextureResourceType::BOARD));
 	setPosition(position);
 }
 
-void Board::update(sf::RenderWindow & window)
+void Board::update(sf::RenderWindow &window)
 {
 }
 
-void Board::draw(sf::RenderWindow & window)
+void Board::draw(sf::RenderWindow &window)
 {
 	window.draw(background);
 }
 
 void Board::addPoint(int id, sf::Vector2f position)
 {
-	Point p(id, position);
+	Point *p = new Point(id, position);
 	points.push_back(p);
-	std::cout << "Point " << p.getId() << " added to board!\n";
+	std::cout << "Point " << p->getId() << " added to board!\n";
 }
 
-void Board::setBackground(sf::Texture texture)
+void Board::addConnection(Point & p1, Point & p2)
 {
-	this->backgroundTexture = texture;
-	background.setTexture(&backgroundTexture);
+}
+
+void Board::setBackground(sf::Texture &texture)
+{
+	background.setTexture(&texture);
 }
 
 void Board::setPosition(sf::Vector2f position)

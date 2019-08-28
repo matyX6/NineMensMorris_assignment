@@ -3,53 +3,45 @@
 
 Button::Button(){}
 
+Button::~Button()
+{
+	std::cout << "Button " << text.getString().toAnsiString() << " destroyed!\n";
+}
+
 Button::Button(sf::Vector2f position, sf::String text)
 {
-
-	//load textures and resources
-	textFont.loadFromFile("./fonts/Splatch.ttf");
-	textureNormal.loadFromFile("./textures/button-normal.png");
-	textureHover.loadFromFile("./textures/button-hover.png");
-	texturePressed.loadFromFile("./textures/button-pressed.png");
-
-	soundPressed.setBuffer(Resources::get().sound(AudioResourceType::BUTTON_PRESSED));
-
-	//set button font
-	this->text.setFont(textFont);
-
-	//button background
 	background.setSize(sf::Vector2f(120.0f, 60.0f));
-
-	//set state
+	soundPressed.setBuffer(Resources::get().sound(AudioResourceType::BUTTON_PRESSED));
+	this->text.setFont(Resources::get().font(FontResourceType::MAIN));
 	justPressed = false;
 	setState(ButtonState::NORMAL);
-
 	setText(text);
 	setPosition(position);
 }
 
 void Button::update(sf::RenderWindow &window)
 {
-	//hover and press state check
+	// hover & press states
 	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 	justPressed = false;
 	sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
 	ButtonState newState = ButtonState::NORMAL;
-
-	if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat)))
-	{
+	if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat))) {
 		newState = ButtonState::HOVER;
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-		{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 			newState = ButtonState::PRESSED;
 		}
 	}
-
-	if (state != newState)
-	{
+	if (state != newState) {
 		setState(newState);
 	}
+}
+
+void Button::draw(sf::RenderWindow &window)
+{
+	window.draw(background);
+	window.draw(text);
 }
 
 bool Button::isJustPressed()
@@ -72,37 +64,34 @@ void Button::setPosition(sf::Vector2f position)
 	this->position = position;
 
 	background.setPosition(position);
-
 	centerText();
 }
 
 void Button::setText(sf::String string)
 {
 	text.setString(string);
-	centerText();
 	text.setCharacterSize(16.0f);
+	centerText();
 }
 
-void Button::draw(sf::RenderWindow &window)
+sf::String Button::getText()
 {
-	window.draw(background);
-	window.draw(text);
+	return text.getString();
 }
 
-void Button::setState(ButtonState state)
-{
+void Button::setState(ButtonState state) {
 	this->state = state;
 
 	switch (state)
 	{
 	case ButtonState::NORMAL:
-		setBackground(textureNormal);
+		setBackground(Resources::get().texture(TextureResourceType::BUTTON_NORMAL));
 		break;
 	case ButtonState::HOVER:
-		setBackground(textureHover);
+		setBackground(Resources::get().texture(TextureResourceType::BUTTON_HOVER));
 		break;
 	case ButtonState::PRESSED:
-		setBackground(texturePressed);
+		setBackground(Resources::get().texture(TextureResourceType::BUTTON_PRESSED));
 		justPressed = true;
 		soundPressed.play();
 		break;
@@ -111,8 +100,7 @@ void Button::setState(ButtonState state)
 	}
 }
 
-void Button::centerText() 
-{
+void Button::centerText() {
 	sf::Vector2f textureHalfSize(background.getGlobalBounds().width * 0.5f,
 		background.getGlobalBounds().height * 0.5f);
 	sf::Vector2f textHalfSize(text.getGlobalBounds().width * 0.5f,
@@ -120,4 +108,3 @@ void Button::centerText()
 	sf::Vector2f offsetFix(0.0f, text.getLocalBounds().top);
 	text.setPosition(position + textureHalfSize - textHalfSize - offsetFix);
 }
-

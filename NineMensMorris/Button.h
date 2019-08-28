@@ -1,46 +1,41 @@
 #pragma once
+#include "Resources.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
 
-enum class ButtonState
-{
+enum class ButtonState {
 	NORMAL, HOVER, PRESSED
 };
 
 class Button
 {
+	// variables
 public:
-	Button();
-	Button(sf::Vector2f position, sf::String text);
-
-	void update(sf::RenderWindow &window);
-	void draw(sf::RenderWindow &window);
-
-	bool isJustPressed();
-
-	void setPosition(sf::Vector2f position);
-	sf::Vector2f getPosition();
-
-
-	void setBackground(sf::Texture &texture);
-	void setText(sf::String string);
-	void setState(ButtonState state);
-
 private:
 	ButtonState state;
 	sf::Vector2f position;
 	sf::Text text;
 	sf::RectangleShape background;
+	sf::Sound soundPressed;
 
 	bool justPressed;
-	sf::Texture textureNormal;
-	sf::Texture textureHover;
-	sf::Texture texturePressed;
-	sf::Sound soundPressed;
-	sf::Font textFont;
 
-	//method
+	// methods
+public:
+	Button();
+	~Button();
+	Button(sf::Vector2f position, sf::String text);
+	void update(sf::RenderWindow &window);
+	void draw(sf::RenderWindow &window);
+
+	bool isJustPressed();
+	void setPosition(sf::Vector2f position);
+	sf::Vector2f getPosition();
+	void setBackground(sf::Texture &texture);
+	void setText(sf::String string);
+	sf::String getText();
+	void setState(ButtonState state);
+private:
 	void centerText();
 };
-

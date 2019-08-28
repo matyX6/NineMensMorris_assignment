@@ -8,15 +8,40 @@ enum class AudioResourceType
 	BUTTON_HOVER
 
 };
+
+enum class TextureResourceType
+{
+	BACKGROUND,
+	BOARD,
+	BUTTON_NORMAL,
+	BUTTON_PRESSED,
+	BUTTON_HOVER,
+};
+
+enum class FontResourceType
+{
+	MAIN
+};
 class Resources
 {
 private:
 	sf::SoundBuffer soundButtonPressed;
 	sf::SoundBuffer soundButtonHover;
+
+	sf::Texture textureBackground;
+	sf::Texture textureBoard;
+	sf::Texture textureButtonNormal;
+	sf::Texture textureButtonHover;
+	sf::Texture textureButtonPressed;
+
+	sf::Font fontMain;
+
 	Resources();
 
 public:
 	static Resources& get();
 	sf::SoundBuffer& sound(AudioResourceType type);
+	sf::Texture &texture(TextureResourceType type);
+	sf::Font &font(FontResourceType type);
 };
 

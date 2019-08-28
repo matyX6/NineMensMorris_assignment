@@ -5,18 +5,18 @@
 
 class Game
 {
-public:
-	Game();
-	void update(sf::RenderWindow &window);
-	void draw(sf::RenderWindow &window);
-	void setBackground(sf::Texture texture);
-
 private:
-	sf::Texture backgroundTexture;
+	Board board;
+	std::vector<Button*> buttons;
+
 	sf::RectangleShape background;
 
-	Board board;
-	Button button_reset;
-	Button button_quit;
+public:
+	Game();
+	~Game();
+	void update(sf::RenderWindow &window);
+	void draw(sf::RenderWindow &window);
+
+	void setBackground(sf::Texture &texture);
 };
 
