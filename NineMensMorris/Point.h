@@ -4,6 +4,11 @@
 #include <vector>
 #include <iostream>
 
+enum class PointState
+{
+	NORMAL, HOVER, PRESSED
+};
+
 class Point
 {
 public:
@@ -13,6 +18,10 @@ public:
 	int getId();
 	void connectTo(Point &point);
 	void setPosition(sf::Vector2f position);
+
+	bool isJustPressed();
+	void setState(PointState state);
+	void setBackground(sf::Texture &texture);
 
 	void printConnections()
 	{
@@ -28,5 +37,8 @@ private:
 	sf::Vector2f position;
 	std::vector<Point *> connectedPoints;
 	sf::RectangleShape background;
+	PointState state;
+	bool justPressed;
+	sf::Sound soundPressed;
 };
 
