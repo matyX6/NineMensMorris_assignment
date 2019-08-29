@@ -14,6 +14,11 @@ Game::Game()
 	buttons.push_back(new Button(sf::Vector2f(460.0f, 520.0f), "QUIT"));
 
 	state = GameState::GAMEOVER;
+
+	textPlayer.setPosition(sf::Vector2f(300.0f, 530.0f));
+	textStatus.setPosition(sf::Vector2f(300.0f, 570.0f));
+	textPlayer.setText("");
+	textStatus.setText("GAME OVER");
 }
 
 void Game::update(sf::RenderWindow &window)
@@ -33,6 +38,7 @@ void Game::update(sf::RenderWindow &window)
 				board.disableAllPoints();
 				board.enablePlayerCoins(1 - currentPlayerIndex);
 				board.disableLinesWithPlayerIndex(currentPlayerIndex);
+				textStatus.setText("REMOVE ENEMY COIN");
 				state = GameState::REMOVING;
 				return;
 			}
@@ -42,6 +48,8 @@ void Game::update(sf::RenderWindow &window)
 				// keep state
 				advanceCurrentPlayerIndex();
 				board.selectUnplacedCoin(currentPlayerIndex);
+				updatePlayerText();
+				textStatus.setText("PLACE YOUR COIN");
 			}
 			else {
 				// all done, proceed to MOVING state
@@ -49,6 +57,8 @@ void Game::update(sf::RenderWindow &window)
 				advanceCurrentPlayerIndex();
 				board.enablePlayerCoins(currentPlayerIndex);
 				board.setSelectedCoin(nullptr);
+				updatePlayerText();
+				textStatus.setText("SELECT YOUR COIN TO MOVE");
 				state = GameState::MOVING;
 			}
 		}
@@ -62,6 +72,8 @@ void Game::update(sf::RenderWindow &window)
 				board.setSelectedCoin(nullptr);
 				board.disableAllPoints();
 				board.enablePlayerCoins(currentPlayerIndex);
+				updatePlayerText();
+				textStatus.setText("SELECT YOUR COIN TO MOVE");
 			}
 			else {
 				// select new coin
@@ -72,6 +84,8 @@ void Game::update(sf::RenderWindow &window)
 
 				//enable neighbouring points
 				board.getJustSelectedCoin()->getLinkedPoint()->enableFreeConnectedPoints();
+				updatePlayerText();
+				textStatus.setText("MOVE YOUR COIN");
 			}
 		}
 
@@ -92,12 +106,16 @@ void Game::update(sf::RenderWindow &window)
 					board.disableAllPoints();
 					board.enablePlayerCoins(1 - currentPlayerIndex);
 					board.disableLinesWithPlayerIndex(currentPlayerIndex);
+					textStatus.setText("REMOVE ENEMY COIN");
 					state = GameState::REMOVING;
 					return;
 				}
 
 				advanceCurrentPlayerIndex();
 				board.enablePlayerCoins(currentPlayerIndex);
+
+				updatePlayerText();
+				textStatus.setText("MOVE YOUR COIN");
 			}
 		}
 
@@ -108,6 +126,7 @@ void Game::update(sf::RenderWindow &window)
 		{
 			board.getJustSelectedCoin()->remove();
 			advanceCurrentPlayerIndex();
+			updatePlayerText();
 
 			// check if still has to place stuff
 			if (board.hasUnplacedCoin()) 
@@ -117,6 +136,7 @@ void Game::update(sf::RenderWindow &window)
 				board.enableRemainingPoints();
 				board.refreshLines();
 				board.selectUnplacedCoin(currentPlayerIndex);
+				textStatus.setText("PLACE YOUR COIN");
 				state = GameState::PLACING;
 			}
 			else 
@@ -125,6 +145,7 @@ void Game::update(sf::RenderWindow &window)
 				board.unlinkDisabledCoins();
 				board.enablePlayerCoins(currentPlayerIndex);
 				board.refreshLines();
+				textStatus.setText("MOVE YOUR COIN");
 				state = GameState::MOVING;
 			}
 		}
@@ -152,22 +173,28 @@ void Game::update(sf::RenderWindow &window)
 		}
 	}
 
+	//update children
 	board.update(window);
 	for (auto button : buttons) 
 	{
 		button->update(window);
 	}
+	textPlayer.update(window);
+	textStatus.update(window);
 }
 
 void Game::draw(sf::RenderWindow &window)
 {
 	window.draw(background);
 
+	//draw children
 	board.draw(window);
 	for (auto button : buttons) 
 	{
 		button->draw(window);
 	}
+	textPlayer.draw(window);
+	textStatus.draw(window);
 }
 
 void Game::setBackground(sf::Texture &texture)
@@ -184,6 +211,8 @@ void Game::reset()
 
 	board.selectUnplacedCoin(currentPlayerIndex);
 	state = GameState::PLACING;
+	updatePlayerText();
+	textStatus.setText("PLACE YOUR COIN");
 }
 
 void Game::advanceCurrentPlayerIndex()
@@ -192,5 +221,15 @@ void Game::advanceCurrentPlayerIndex()
 	if (currentPlayerIndex >= numberOfPlayers)
 	{
 		currentPlayerIndex = 0;
+	}
+}
+
+void Game::updatePlayerText()
+{
+	switch (currentPlayerIndex)
+	{
+	case 0: textPlayer.setText("PLAYER 1"); break;
+	case 1: textPlayer.setText("PLAYER 2"); break;
+
 	}
 }

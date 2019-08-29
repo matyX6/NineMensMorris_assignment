@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Button.h"
 #include "Board.h"
+#include "Text.h"
 
 enum class GameState
 {
@@ -16,6 +17,8 @@ class Game
 private:
 	Board board;
 	std::vector<Button*> buttons;
+	Text textPlayer;
+	Text textStatus;
 
 	int numberOfPlayers = 2;
 	int numberOfCoinsPerPlayer = 9;
@@ -31,4 +34,5 @@ public:
 	void reset();
 	void setBackground(sf::Texture &texture);
 	void advanceCurrentPlayerIndex();
+	void updatePlayerText();
 };
