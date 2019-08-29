@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Resources.h"
+#include "Coin.h"
 #include <vector>
 #include <iostream>
 
@@ -20,6 +21,7 @@ private:
 	bool justPressed;
 	sf::Sound soundPressed;
 	bool disabled;
+	Coin *coin = nullptr;
 
 public:
 	Point(int id, sf::Vector2f position);
@@ -37,6 +39,9 @@ public:
 	bool isEnabled();
 	sf::Vector2f getPosition();
 	void moveTo(sf::Vector2f position);
+	void reset();
+	void linkCoin(Coin *coin);
+	Coin *getLinkedCoin();
 
 	void printConnections()
 	{

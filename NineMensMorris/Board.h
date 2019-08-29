@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Point.h"
 #include "Coin.h"
+#include "Line.h"
 #include <vector>
 
 class Board
@@ -11,6 +12,7 @@ private:
 	std::vector<Point*> points;
 	std::vector<Coin*> coinsWhite;
 	std::vector<Coin*> coinsBlack;
+	std::vector<Line*> lines;
 	sf::RectangleShape background;
 	Coin *selectedCoin;
 	bool justPlacedCoin;
@@ -28,4 +30,5 @@ public:
 	void selectCoinFromStack(int playerIndex, int coinIndex);
 	void reset();
 	bool hasJustPlacedCoin();
+	void checkLines();
 };

@@ -105,6 +105,95 @@ Board::Board(sf::Vector2f position)
 	points.push_back(p22);
 	points.push_back(p23);
 
+	// creating lines
+	Line *l0 = new Line();
+	Line *l1 = new Line();
+	Line *l2 = new Line();
+	Line *l3 = new Line();
+	Line *l4 = new Line();
+	Line *l5 = new Line();
+	Line *l6 = new Line();
+	Line *l7 = new Line();
+	Line *l8 = new Line();
+	Line *l9 = new Line();
+	Line *l10 = new Line();
+	Line *l11 = new Line();
+	Line *l12 = new Line();
+	Line *l13 = new Line();
+	Line *l14 = new Line();
+	Line *l15 = new Line();
+
+	// forming lines
+	l0->addPoint(p7);
+	l0->addPoint(p0);
+	l0->addPoint(p1);
+	l1->addPoint(p1);
+	l1->addPoint(p2);
+	l1->addPoint(p3);
+	l2->addPoint(p3);
+	l2->addPoint(p4);
+	l2->addPoint(p5);
+	l3->addPoint(p5);
+	l3->addPoint(p6);
+	l3->addPoint(p7);
+	// --
+	l4->addPoint(p15);
+	l4->addPoint(p8);
+	l4->addPoint(p9);
+	l5->addPoint(p9);
+	l5->addPoint(p10);
+	l5->addPoint(p11);
+	l6->addPoint(p11);
+	l6->addPoint(p12);
+	l6->addPoint(p13);
+	l7->addPoint(p13);
+	l7->addPoint(p14);
+	l7->addPoint(p15);
+	// --
+	l8->addPoint(p23);
+	l8->addPoint(p16);
+	l8->addPoint(p17);
+	l9->addPoint(p17);
+	l9->addPoint(p18);
+	l9->addPoint(p19);
+	l10->addPoint(p19);
+	l10->addPoint(p20);
+	l10->addPoint(p21);
+	l11->addPoint(p21);
+	l11->addPoint(p22);
+	l11->addPoint(p23);
+	// --
+	l12->addPoint(p0);
+	l12->addPoint(p8);
+	l12->addPoint(p16);
+	l13->addPoint(p2);
+	l13->addPoint(p10);
+	l13->addPoint(p18);
+	l14->addPoint(p4);
+	l14->addPoint(p12);
+	l14->addPoint(p20);
+	l15->addPoint(p6);
+	l15->addPoint(p14);
+	l15->addPoint(p22);
+
+	// storing lines
+	lines.push_back(l0);
+	lines.push_back(l1);
+	lines.push_back(l2);
+	lines.push_back(l3);
+	lines.push_back(l4);
+	lines.push_back(l5);
+	lines.push_back(l6);
+	lines.push_back(l7);
+	lines.push_back(l8);
+	lines.push_back(l9);
+	lines.push_back(l10);
+	lines.push_back(l11);
+	lines.push_back(l12);
+	lines.push_back(l13);
+	lines.push_back(l14);
+	lines.push_back(l15);
+
 	// create coins
 	Coin *w1 = new Coin(0, sf::Vector2f(50.0f, 140.0f));
 	Coin *w2 = new Coin(0, sf::Vector2f(50.0f, 160.0f));
@@ -160,9 +249,12 @@ void Board::update(sf::RenderWindow &window)
 			if (selectedCoin != nullptr)
 			{
 				selectedCoin->setPosition(point->getPosition());
+				point->linkCoin(selectedCoin);
 				selectedCoin->deselect();
 				selectedCoin = nullptr;
 				justPlacedCoin = true;
+
+				checkLines();
 			}
 		}
 	}
@@ -247,18 +339,18 @@ void Board::reset()
 	//reset coins
 	for (auto coin : coinsWhite)
 	{
-		coin->goHome();
-		coin->disable();
-		coin->deselect();
+		coin->reset();
 	}
 	for (auto coin : coinsBlack)
 	{
-		coin->goHome();
-		coin->disable();
-		coin->deselect();
+		coin->reset();
+	}
+	//reset points
+	for (auto point : points)
+	{
+		point->reset();
 	}
 
-	//reset points
 	enableAllPoints();
 	selectedCoin = nullptr;
 
@@ -268,4 +360,18 @@ void Board::reset()
 bool Board::hasJustPlacedCoin()
 {
 	return justPlacedCoin;
+}
+
+void Board::checkLines()
+{
+	std::cout << "Checking lines...\n";
+	for (auto line : lines)
+	{
+		if (line->isCompleted())
+		{
+			std::cout << "Line[";
+			line->printPoints();
+			std::cout << "] completed (" << line->getCompletedPlayerIndex() << ").\n";
+		}
+	}
 }

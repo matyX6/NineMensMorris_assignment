@@ -31,5 +31,7 @@ public:
 	void deselect();
 	bool isSelected();
 	void goHome();
+	void reset();
+	int getPlayerIndex();
 };
 

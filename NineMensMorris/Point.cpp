@@ -119,5 +119,20 @@ void Point::moveTo(sf::Vector2f position)
 	setPosition(position);
 }
 
+void Point::reset()
+{
+	disable();
+	coin = nullptr;
+}
+
+void Point::linkCoin(Coin *coin)
+{
+	this->coin = coin;
+}
+
+Coin * Point::getLinkedCoin()
+{
+	return coin;
+}
 
 

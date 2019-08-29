@@ -106,6 +106,18 @@ void Coin::goHome()
 	setPosition(homePosition);
 }
 
+void Coin::reset()
+{
+	goHome();
+	disable();
+	deselect();
+}
+
+int Coin::getPlayerIndex()
+{
+	return playerIndex;
+}
+
 void Coin::setPlayerIndex(int playerIndex)
 {
 	this->playerIndex = playerIndex;
