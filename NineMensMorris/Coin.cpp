@@ -8,7 +8,7 @@ Coin::Coin(int playerIndex, sf::Vector2f position)
 	textureSelected.setOrigin(sf::Vector2f(30.0f, 30.0f));
 	background.setTexture(&Resources::get().texture(TextureResourceType::COIN_WHITE));
 	textureSelected.setTexture(&Resources::get().texture(TextureResourceType::COIN_SELECTED));
-	soundRemoved.setBuffer(Resources::get().sound(AudioResourceType::COIN_REMOVED));
+	soundRemoved.setBuffer(Resources::get().sound(SoundResourceType::COIN_REMOVED));
 
 	setPlayerIndex(playerIndex);
 	setPosition(position);

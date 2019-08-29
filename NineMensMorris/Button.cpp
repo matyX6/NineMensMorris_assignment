@@ -10,7 +10,7 @@ Button::~Button()
 Button::Button(sf::Vector2f position, sf::String text)
 {
 	background.setSize(sf::Vector2f(120.0f, 60.0f));
-	soundPressed.setBuffer(Resources::get().sound(AudioResourceType::BUTTON_PRESSED));
+	soundPressed.setBuffer(Resources::get().sound(SoundResourceType::BUTTON_PRESSED));
 	this->text.setFont(Resources::get().font(FontResourceType::MAIN));
 	justPressed = false;
 	setState(ButtonState::NORMAL);

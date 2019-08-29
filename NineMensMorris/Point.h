@@ -20,7 +20,7 @@ private:
 	PointState state;
 	bool justPressed;
 	sf::Sound soundPressed;
-	bool disabled;
+	bool disabled = true;
 	Coin *coin = nullptr;
 
 public:

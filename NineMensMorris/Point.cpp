@@ -7,7 +7,7 @@ Point::Point(int id, sf::Vector2f position)
 	background.setSize(sf::Vector2f(20.0f, 20.0f));
 	background.setOrigin(sf::Vector2f(10.0f, 10.0f));
 	background.setTexture(&Resources::get().texture(TextureResourceType::POINT_NORMAL));
-	soundPressed.setBuffer(Resources::get().sound(AudioResourceType::BUTTON_PRESSED));
+	soundPressed.setBuffer(Resources::get().sound(SoundResourceType::BUTTON_PRESSED));
 	this->id = id;
 	setPosition(position);
 	disable();

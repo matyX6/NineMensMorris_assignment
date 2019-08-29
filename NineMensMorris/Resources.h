@@ -1,13 +1,7 @@
 #pragma once
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-
-enum class AudioResourceType
-{
-	BUTTON_PRESSED,
-	BUTTON_HOVER,
-	COIN_REMOVED
-};
+#include <iostream>
 
 enum class TextureResourceType
 {
@@ -21,40 +15,34 @@ enum class TextureResourceType
 	POINT_PRESSED,
 	COIN_WHITE,
 	COIN_BLACK,
-	COIN_SELECTED
+	COIN_SELECTED,
+};
+
+enum class SoundResourceType
+{
+	BUTTON_PRESSED,
+	BUTTON_HOVER,
+	COIN_REMOVED,
 };
 
 enum class FontResourceType
 {
-	MAIN
+	MAIN,
 };
+
 class Resources
 {
 private:
-	sf::SoundBuffer soundButtonPressed;
-	sf::SoundBuffer soundButtonHover;
-	sf::SoundBuffer soundCoinDisabled;
-
-	sf::Texture textureBackground;
-	sf::Texture textureBoard;
-	sf::Texture textureButtonNormal;
-	sf::Texture textureButtonHover;
-	sf::Texture textureButtonPressed;
-	sf::Texture texturePointNormal;
-	sf::Texture texturePointHover;
-	sf::Texture texturePointPressed;
-	sf::Texture textureCoinWhite;
-	sf::Texture textureCoinBlack;
-	sf::Texture textureCoinSelected;
-
-	sf::Font fontMain;
+	std::map<TextureResourceType, sf::Texture> textures;
+	std::map<SoundResourceType, sf::SoundBuffer> sounds;
+	std::map<FontResourceType, sf::Font> fonts;
 
 	Resources();
+	void loadAllResources();
 
 public:
 	static Resources& get();
-	sf::SoundBuffer& sound(AudioResourceType type);
-	sf::Texture &texture(TextureResourceType type);
-	sf::Font &font(FontResourceType type);
+	sf::SoundBuffer& sound(SoundResourceType type);
+	sf::Texture& texture(TextureResourceType type);
+	sf::Font& font(FontResourceType type);
 };
-
