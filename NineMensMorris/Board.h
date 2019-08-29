@@ -50,6 +50,7 @@ public:
 	void moveSelectedCoinToPoint(Point *point);
 	void placeSelectedCoin(Point *point);
 	void setSelectedCoin(Coin *coin);
+	int getNumberOfPlayerUnremovedCoins(int playerIndex);
 
 	bool hasJustSelectedCoin();
 	Coin *getJustSelectedCoin();

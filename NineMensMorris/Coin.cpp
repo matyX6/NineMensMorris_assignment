@@ -129,15 +129,12 @@ int Coin::getPlayerIndex()
 
 void Coin::remove()
 {
-	std::cout << "Removed coin!\n";
 	disable();
 	deselect();
 	setPosition(sf::Vector2f(-1000.0f, -1000.0f));
 	setState(CoinState::REMOVED);
 	linkedPoint->unlinkCoin();
-	std::cout << "Linked point? " << linkedPoint->hasLinkedCoin();
 	unlinkPoint();
-	std::cout << "Linked coin?" << hasLinkedPoint();
 	soundRemoved.play();
 }
 

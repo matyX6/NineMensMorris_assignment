@@ -523,3 +523,16 @@ void Board::setSelectedCoin(Coin * coin)
 {
 	selectedCoin = coin;
 }
+
+int Board::getNumberOfPlayerUnremovedCoins(int playerIndex)
+{
+	int count = 0;
+	for (auto coin : coins)
+	{
+		if ((coin->getPlayerIndex() == playerIndex) && (coin->getState() != CoinState::REMOVED))
+		{
+			count++;
+		}
+	}
+	return count;
+}

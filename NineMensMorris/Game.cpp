@@ -18,7 +18,7 @@ Game::Game()
 	textPlayer.setPosition(sf::Vector2f(300.0f, 530.0f));
 	textStatus.setPosition(sf::Vector2f(300.0f, 570.0f));
 	textPlayer.setText("");
-	textStatus.setText("GAME OVER");
+	textStatus.setText("");
 }
 
 void Game::update(sf::RenderWindow &window)
@@ -58,7 +58,7 @@ void Game::update(sf::RenderWindow &window)
 				board.enablePlayerCoins(currentPlayerIndex);
 				board.setSelectedCoin(nullptr);
 				updatePlayerText();
-				textStatus.setText("SELECT YOUR COIN TO MOVE");
+				textStatus.setText("SELECT AND MOVE COIN");
 				state = GameState::MOVING;
 			}
 		}
@@ -73,7 +73,7 @@ void Game::update(sf::RenderWindow &window)
 				board.disableAllPoints();
 				board.enablePlayerCoins(currentPlayerIndex);
 				updatePlayerText();
-				textStatus.setText("SELECT YOUR COIN TO MOVE");
+				textStatus.setText("SELECT AND MOVE COIN");
 			}
 			else {
 				// select new coin
@@ -115,7 +115,7 @@ void Game::update(sf::RenderWindow &window)
 				board.enablePlayerCoins(currentPlayerIndex);
 
 				updatePlayerText();
-				textStatus.setText("MOVE YOUR COIN");
+				textStatus.setText("SELECT AND MOVE COIN");
 			}
 		}
 
@@ -124,13 +124,28 @@ void Game::update(sf::RenderWindow &window)
 	case GameState::REMOVING:
 		if (board.hasJustSelectedCoin()) 
 		{
+			//removing enemy coin
 			board.getJustSelectedCoin()->remove();
+
+			//checking for game over
+			std::cout << "Enemy coins left: " << board.getNumberOfPlayerUnremovedCoins(1 - currentPlayerIndex) << "\n";
+			if (board.getNumberOfPlayerUnremovedCoins(1 - currentPlayerIndex) < 3)
+			{
+				board.disableAllCoins();
+				//board.deselectAllCoins();
+				updatePlayerText();
+				textStatus.setText("YOU WIN");
+				state = GameState::GAMEOVER;
+				return;
+			}
+
 			advanceCurrentPlayerIndex();
 			updatePlayerText();
 
-			// check if still has to place stuff
+			// check if we are still placing coins
 			if (board.hasUnplacedCoin()) 
 			{
+				//we are placing coins, go to placing state
 				board.disableAllCoins();
 				board.unlinkDisabledCoins();
 				board.enableRemainingPoints();
@@ -141,11 +156,12 @@ void Game::update(sf::RenderWindow &window)
 			}
 			else 
 			{
+				//we are not placing coins, go to moving state
 				board.disableAllCoins();
 				board.unlinkDisabledCoins();
 				board.enablePlayerCoins(currentPlayerIndex);
 				board.refreshLines();
-				textStatus.setText("MOVE YOUR COIN");
+				textStatus.setText("SELECT AND MOVE COIN");
 				state = GameState::MOVING;
 			}
 		}
