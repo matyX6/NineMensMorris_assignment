@@ -1,13 +1,13 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include "Resources.h"
-#include "Coin.h"
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include "Coin.h"
 
-enum class PointState
+enum class PointState 
 {
-	NORMAL, HOVER, PRESSED
+	NORMAL, HOVER, PRESSED, DISABLED
 };
 
 class Point
@@ -21,7 +21,10 @@ private:
 	bool justPressed;
 	sf::Sound soundPressed;
 	bool disabled = true;
-	Coin *coin = nullptr;
+	Coin *linkedCoin = nullptr;
+	bool lastMousePressed = false;
+	bool justMousePressed = false;
+	bool justMouseReleased = false;
 
 public:
 	Point(int id, sf::Vector2f position);
@@ -30,9 +33,8 @@ public:
 	int getId();
 	void connectTo(Point &point);
 	void setPosition(sf::Vector2f position);
-
 	bool isJustPressed();
-	void setState(PointState state);
+	void updateBackground();
 	void setBackground(sf::Texture &texture);
 	void enable();
 	void disable();
@@ -42,17 +44,10 @@ public:
 	void reset();
 	void linkCoin(Coin *coin);
 	void unlinkCoin();
-	Coin *getLinkedCoin();
+	Coin * getLinkedCoin();
 	bool hasLinkedCoin();
 	void enableFreeConnectedPoints();
-
-	void printConnections()
-	{
-		for (auto point : connectedPoints)
-		{
-			std::cout << "p" << point->getId() << " ";
-		}
-		std::cout << "\n";
-	}
+	void printConnections();
+	bool isMouseOver(sf::RenderWindow &window);
+	bool isMousePressed();
 };
-

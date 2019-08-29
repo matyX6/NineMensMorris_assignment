@@ -132,7 +132,6 @@ void Game::update(sf::RenderWindow &window)
 			if (board.getNumberOfPlayerUnremovedCoins(1 - currentPlayerIndex) < 3)
 			{
 				board.disableAllCoins();
-				//board.deselectAllCoins();
 				updatePlayerText();
 				textStatus.setText("YOU WIN");
 				state = GameState::GAMEOVER;

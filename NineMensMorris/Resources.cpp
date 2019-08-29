@@ -22,6 +22,7 @@ void Resources::loadAllResources()
 	textures[TextureResourceType::POINT_NORMAL].loadFromFile("./textures/point-normal.png");
 	textures[TextureResourceType::POINT_HOVER].loadFromFile("./textures/point-hover.png");
 	textures[TextureResourceType::POINT_PRESSED].loadFromFile("./textures/point-pressed.png");
+	textures[TextureResourceType::POINT_DISABLED].loadFromFile("./textures/point-pressed.png");
 	textures[TextureResourceType::COIN_WHITE].loadFromFile("./textures/coin1.png");
 	textures[TextureResourceType::COIN_BLACK].loadFromFile("./textures/coin2.png");
 	textures[TextureResourceType::COIN_SELECTED].loadFromFile("./textures/coin-selected.png");

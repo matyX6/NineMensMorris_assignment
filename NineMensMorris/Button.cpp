@@ -1,10 +1,12 @@
 #include "Button.h"
+#include "Resources.h"
 
-Button::Button(){}
+Button::Button()
+{
+}
 
 Button::~Button()
 {
-	std::cout << "Button " << text.getString().toAnsiString() << " destroyed!\n";
 }
 
 Button::Button(sf::Vector2f position, sf::String text)
@@ -20,23 +22,69 @@ Button::Button(sf::Vector2f position, sf::String text)
 
 void Button::update(sf::RenderWindow &window)
 {
-	// hover & press states
-	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 	justPressed = false;
-	sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
-	ButtonState newState = ButtonState::NORMAL;
-	if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat))) 
-	{
-		newState = ButtonState::HOVER;
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) 
-		{
-			newState = ButtonState::PRESSED;
-		}
-	}
-	if (state != newState) 
+	// get mouse state
+	justMousePressed = false;
+	justMouseReleased = false;
+	if (lastMousePressed != isMousePressed()) 
 	{
-		setState(newState);
+		if (lastMousePressed == false) { justMousePressed = true; }
+		else { justMouseReleased = true; }
+		lastMousePressed = isMousePressed();
+	}
+
+	// states
+	switch (state)
+	{
+	case ButtonState::NORMAL:
+		if (isMouseOver(window)) 
+		{
+			if (justMousePressed) 
+			{
+				state = ButtonState::PRESSED;
+				updateBackground();
+			}
+			else {
+				if (!isMousePressed()) 
+				{
+					state = ButtonState::HOVER;
+					updateBackground();
+				}
+			}
+		}
+		break;
+	case ButtonState::HOVER:
+		if (justMousePressed) 
+		{
+			state = ButtonState::PRESSED;
+			updateBackground();
+		}
+		else {
+			if (!isMouseOver(window)) 
+			{
+				state = ButtonState::NORMAL;
+				updateBackground();
+			}
+		}
+		break;
+	case ButtonState::PRESSED:
+		if (!isMouseOver(window)) 
+		{
+			state = ButtonState::NORMAL;
+			updateBackground();
+		}
+		else 
+		{
+			if (justMouseReleased) 
+			{
+				state = ButtonState::NORMAL;
+				updateBackground();
+				justPressed = true;
+				soundPressed.play();
+			}
+		}
+		break;
 	}
 }
 
@@ -75,7 +123,6 @@ void Button::setText(sf::String string)
 	text.setCharacterSize(16.0f);
 	centerText();
 }
-
 sf::String Button::getText()
 {
 	return text.getString();
@@ -99,6 +146,34 @@ void Button::setState(ButtonState state)
 		soundPressed.play();
 		break;
 	default:
+		break;
+	}
+}
+
+bool Button::isMouseOver(sf::RenderWindow & window)
+{
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+	sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
+	return background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat));
+}
+
+bool Button::isMousePressed()
+{
+	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+}
+
+void Button::updateBackground()
+{
+	switch (state)
+	{
+	case ButtonState::NORMAL:
+		setBackground(Resources::get().texture(TextureResourceType::BUTTON_NORMAL));
+		break;
+	case ButtonState::HOVER:
+		setBackground(Resources::get().texture(TextureResourceType::BUTTON_HOVER));
+		break;
+	case ButtonState::PRESSED:
+		setBackground(Resources::get().texture(TextureResourceType::BUTTON_PRESSED));
 		break;
 	}
 }

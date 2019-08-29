@@ -1,43 +1,92 @@
 #include "Point.h"
 
-
-
 Point::Point(int id, sf::Vector2f position)
 {
 	background.setSize(sf::Vector2f(20.0f, 20.0f));
 	background.setOrigin(sf::Vector2f(10.0f, 10.0f));
 	background.setTexture(&Resources::get().texture(TextureResourceType::POINT_NORMAL));
 	soundPressed.setBuffer(Resources::get().sound(SoundResourceType::BUTTON_PRESSED));
+
 	this->id = id;
 	setPosition(position);
+
 	disable();
 }
 
 void Point::update(sf::RenderWindow &window)
 {
 	justPressed = false;
-	if (!disabled)
-	{
-		sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-		sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
-		PointState newState = PointState::NORMAL;
-		if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat)))
-		{
-			newState = PointState::HOVER;
 
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+	// get mouse state
+	justMousePressed = false;
+	justMouseReleased = false;
+	if (lastMousePressed != isMousePressed()) 
+	{
+		if (lastMousePressed == false) { justMousePressed = true; }
+		else { justMouseReleased = true; }
+		lastMousePressed = isMousePressed();
+	}
+
+	// states
+	switch (state)
+	{
+	case PointState::NORMAL:
+		if (isMouseOver(window)) 
+		{
+			if (justMousePressed) 
 			{
-				newState = PointState::PRESSED;
+				state = PointState::PRESSED;
+				updateBackground();
+			}
+			else 
+			{
+				if (!isMousePressed()) 
+				{
+					state = PointState::HOVER;
+					updateBackground();
+				}
 			}
 		}
-		if (state != newState)
+		break;
+	case PointState::HOVER:
+		if (justMousePressed) 
 		{
-			setState(newState);
+			state = PointState::PRESSED;
+			updateBackground();
 		}
+		else 
+		{
+			if (!isMouseOver(window)) 
+			{
+				state = PointState::NORMAL;
+				updateBackground();
+			}
+		}
+		break;
+	case PointState::PRESSED:
+		if (!isMouseOver(window)) 
+		{
+			state = PointState::NORMAL;
+			updateBackground();
+		}
+		else 
+		{
+			if (justMouseReleased) 
+			{
+				state = PointState::NORMAL;
+				updateBackground();
+				disable(); // TEMP
+				justPressed = true;
+				soundPressed.play();
+			}
+		}
+		break;
+	case PointState::DISABLED:
+		break;
 	}
 }
 
-void Point::draw(sf::RenderWindow &window)
+void Point::draw(sf::RenderWindow & window)
 {
 	window.draw(background);
 }
@@ -64,10 +113,8 @@ bool Point::isJustPressed()
 	return justPressed;
 }
 
-void Point::setState(PointState state)
+void Point::updateBackground()
 {
-	this->state = state;
-
 	switch (state)
 	{
 	case PointState::NORMAL:
@@ -78,35 +125,33 @@ void Point::setState(PointState state)
 		break;
 	case PointState::PRESSED:
 		setBackground(Resources::get().texture(TextureResourceType::POINT_PRESSED));
-		justPressed = true;
-		soundPressed.play();
-		disable();
 		break;
-	default:
+	case PointState::DISABLED:
+		setBackground(Resources::get().texture(TextureResourceType::POINT_DISABLED));
 		break;
 	}
 }
 
-void Point::setBackground(sf::Texture &texture)
+void Point::setBackground(sf::Texture & texture)
 {
 	background.setTexture(&texture);
 }
 
 void Point::enable()
 {
-	disabled = false;
-	setBackground(Resources::get().texture(TextureResourceType::POINT_NORMAL));;
+	state = PointState::NORMAL;
+	updateBackground();
 }
 
 void Point::disable()
 {
-	disabled = true;
-	setBackground(Resources::get().texture(TextureResourceType::POINT_PRESSED));
+	state = PointState::DISABLED;
+	updateBackground();
 }
 
 bool Point::isEnabled()
 {
-	return !disabled;
+	return !(state == PointState::DISABLED);
 }
 
 sf::Vector2f Point::getPosition()
@@ -122,38 +167,57 @@ void Point::moveTo(sf::Vector2f position)
 void Point::reset()
 {
 	disable();
-	coin = nullptr;
+	linkedCoin = nullptr;
 }
 
-void Point::linkCoin(Coin *coin)
+void Point::linkCoin(Coin * coin)
 {
-	this->coin = coin;
+	this->linkedCoin = coin;
 }
 
 void Point::unlinkCoin()
 {
-	coin = nullptr;
+	linkedCoin = nullptr;
 }
 
 Coin * Point::getLinkedCoin()
 {
-	return coin;
+	return linkedCoin;
 }
 
 bool Point::hasLinkedCoin()
 {
-	return !(coin == nullptr);
+	return !(linkedCoin == nullptr);
 }
 
 void Point::enableFreeConnectedPoints()
 {
-	for (auto point : connectedPoints)
+	for (auto point : connectedPoints) 
 	{
-		if (!point->hasLinkedCoin())
+		if (!point->hasLinkedCoin()) 
 		{
 			point->enable();
 		}
 	}
 }
 
+bool Point::isMouseOver(sf::RenderWindow &window)
+{
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+	sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
+	return background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat));
+}
 
+bool Point::isMousePressed()
+{
+	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+}
+
+void Point::printConnections()
+{
+	std::cout << "p" << id << " <--> ";
+	for (auto point : connectedPoints) {
+		std::cout << "p" << point->getId() << " ";
+	}
+	std::cout << "\n";
+}
