@@ -3,12 +3,10 @@
 #include "Resources.h"
 #include <iostream>
 
+
 Game::Game()
 	: board(sf::Vector2f(100.0f, 50.0f))
 {
-	numberOfPlayers = 2;
-	numberOfCoins = 18;
-
 	background.setSize(sf::Vector2f(600.0f, 600.0f));
 	setBackground(Resources::get().texture(TextureResourceType::BACKGROUND));
 
@@ -16,15 +14,6 @@ Game::Game()
 	buttons.push_back(new Button(sf::Vector2f(460.0f, 520.0f), "QUIT"));
 
 	state = GameState::GAMEOVER;
-	nextState = GameState::GAMEOVER;
-}
-
-Game::~Game()
-{
-	for (auto button : buttons) 
-	{
-		delete button;
-	}
 }
 
 void Game::update(sf::RenderWindow &window)
@@ -32,73 +21,58 @@ void Game::update(sf::RenderWindow &window)
 	// states
 	switch (state)
 	{
-	case GameState::PLACE:
+	case GameState::PLACING:
 		if (board.hasJustPlacedCoin()) 
 		{
-			switch (currentPlayerIndex) 
+			// check lines
+			if (board.hasLineWithPlayerIndex(currentPlayerIndex)) 
 			{
-			case 0:
-				numberOfWhiteCoins++;
-				break;
-			case 1:
-				numberOfBlackCoins++;
-				break;
-			}
-			currentNumberOfCoins++;
-
-			//check lines
-			if (board.hasLineWithPlayerIndex(currentPlayerIndex))
-			{
-				//change to remove state
+				// change to REMOVE state
 				board.disableAllPoints();
+				//board.enablePlayerCoins(1 - currentPlayerIndex);
 				switch (currentPlayerIndex)
 				{
 				case 0:
-					board.enablePlayerPoints(1);
+					board.enablePlayerCoins(1);
 					break;
 				case 1:
-					board.enablePlayerPoints(0);
+					board.enablePlayerCoins(0);
 					break;
 				}
-
 				board.disableLinesWithPlayerIndex(currentPlayerIndex);
-				state = GameState::REMOVE;
+				state = GameState::REMOVING;
 				return;
 			}
 
-			//check count
-			if (!(currentNumberOfCoins < numberOfCoins)) 
+			// check count
+			if (board.hasUnplacedCoin()) 
 			{
+				advanceCurrentPlayerIndex();
+				board.selectUnplacedCoin(currentPlayerIndex);
+			}
+			else {
 				board.disableAllPoints();
 				advanceCurrentPlayerIndex();
-				state = GameState::MOVE;
-			}
-			else 
-			{
-				advanceCurrentPlayerIndex();
-				board.selectCoinFromStack(currentPlayerIndex, currentNumberOfCoins / 2);
+				state = GameState::MOVING;
 			}
 		}
 		break;
-	case GameState::MOVE:
+	case GameState::MOVING:
 		break;
-	case GameState::REMOVE:
-		if (board.hasJustSelectedCoin())
+	case GameState::REMOVING:
+		if (board.hasJustSelectedCoin()) 
 		{
 			board.removeSelectedCoin();
 			advanceCurrentPlayerIndex();
 
-			//update counters...
-
-			//check if still has to place stuff
-			if (currentNumberOfCoins < numberOfCoins)
-			{
+			// check if still has to place stuff
+			if (board.hasUnplacedCoin()) {
 				board.disableAllCoins();
 				board.unlinkDisabledCoins();
 				board.enableRemainingPoints();
 				board.refreshLines();
-				board.selectCoinFromStack(currentPlayerIndex, currentNumberOfCoins / 2);
-				state = GameState::PLACE;
+				board.selectUnplacedCoin(currentPlayerIndex);
+				state = GameState::PLACING;
 			}
 		}
 		break;
@@ -137,8 +111,7 @@ void Game::draw(sf::RenderWindow &window)
 	window.draw(background);
 
 	board.draw(window);
-	for (auto button : buttons) 
-	{
+	for (auto button : buttons) {
 		button->draw(window);
 	}
 }
@@ -150,47 +123,19 @@ void Game::setBackground(sf::Texture &texture)
 
 void Game::reset()
 {
-	numberOfWhiteCoins = 0;
-	numberOfBlackCoins = 0;
-	currentNumberOfCoins = 0;
+	board.reset();
 
 	// selecting random player
 	currentPlayerIndex = rand() % numberOfPlayers;
 
-	board.reset();
-	board.selectCoinFromStack(currentPlayerIndex, currentNumberOfCoins / 2);
-
-	state = GameState::PLACE;
-}
-
-void Game::increaseCurrentNumberOfCoins()
-{
-	currentNumberOfCoins++;
-}
-
-int Game::getNumberOfPlayerCoins(int playerIndex)
-{
-	switch (playerIndex)
-	{
-	case 0:
-		return numberOfWhiteCoins;
-		break;
-	case 1:
-		return numberOfBlackCoins;
-		break;
-	}
-}
-
-int Game::getCurrentNumberOfCoins()
-{
-	return currentNumberOfCoins;
+	board.selectUnplacedCoin(currentPlayerIndex);
+	state = GameState::PLACING;
 }
 
 void Game::advanceCurrentPlayerIndex()
 {
 	currentPlayerIndex++;
-	if (currentPlayerIndex >= numberOfPlayers)
-	{
+	if (currentPlayerIndex >= numberOfPlayers) {
 		currentPlayerIndex = 0;
 	}
 }

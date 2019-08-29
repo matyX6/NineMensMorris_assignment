@@ -10,24 +10,25 @@ class Board
 private:
 	sf::Vector2f position;
 	std::vector<Point*> points;
-	std::vector<Coin*> coinsWhite;
-	std::vector<Coin*> coinsBlack;
+	std::vector<Coin*> coins;
 	std::vector<Line*> lines;
 	sf::RectangleShape background;
-	Coin *selectedCoin;
-	bool justPlacedCoin;
-	bool justSelectedCoin;
+	Coin *selectedCoin = nullptr;
+	bool justPlacedCoin = false;
+	bool justSelectedCoin = false;
 
 public:
 	Board(sf::Vector2f position);
 	void update(sf::RenderWindow &window);
 	void draw(sf::RenderWindow &window);
 
+	void setup();
 	void setBackground(sf::Texture &texture);
 	void setPosition(sf::Vector2f position);
 	void disableAllPoints();
 	void enableAllPoints();
-	void selectCoinFromStack(int playerIndex, int coinIndex);
+	void selectUnplacedCoin(int playerIndex);
+	bool hasUnplacedCoin();
 	void reset();
 	bool hasJustPlacedCoin();
 	bool hasJustSelectedCoin();
@@ -38,7 +39,7 @@ public:
 	void disableLinesWithPlayerIndex(int playerIndex);
 	int getLinePlayerIndex();
 	void deselectCoin();
-	void enablePlayerPoints(int playerIndex);
+	void enablePlayerCoins(int playerIndex);
 	void removeSelectedCoin();
 	void disableAllCoins();
 	void enableRemainingPoints();

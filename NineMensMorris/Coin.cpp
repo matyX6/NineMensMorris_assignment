@@ -1,6 +1,6 @@
 #include "Coin.h"
 
-Coin::Coin(int playerIndex, sf::Vector2f position)
+Coin::Coin(int playerIndex, int n, sf::Vector2f position)
 {
 	background.setSize(sf::Vector2f(30.0f, 30.0f));
 	background.setOrigin(sf::Vector2f(15.0f, 15.0f));
@@ -10,9 +10,12 @@ Coin::Coin(int playerIndex, sf::Vector2f position)
 	textureSelected.setTexture(&Resources::get().texture(TextureResourceType::COIN_SELECTED));
 	soundRemoved.setBuffer(Resources::get().sound(SoundResourceType::COIN_REMOVED));
 
+	this->n = n;
 	setPlayerIndex(playerIndex);
 	setPosition(position);
 	homePosition = position;
+
+	state = CoinState::UNPLACED;
 }
 
 void Coin::update(sf::RenderWindow & window)
@@ -110,7 +113,7 @@ void Coin::reset()
 	goHome();
 	disable();
 	deselect();
-	removed = false;
+	state = CoinState::UNPLACED;
 }
 
 int Coin::getPlayerIndex()
@@ -120,16 +123,26 @@ int Coin::getPlayerIndex()
 
 void Coin::remove()
 {
-	deselect();
 	disable();
+	deselect();
 	setPosition(sf::Vector2f(-1000.0f, -1000.0f));
-	removed = true;
+	setState(CoinState::REMOVED);
 	soundRemoved.play();
 }
 
 bool Coin::isRemoved()
 {
-	return removed;
+	return (state == CoinState::REMOVED);
+}
+
+CoinState Coin::getState()
+{
+	return state;
+}
+
+void Coin::setState(CoinState state)
+{
+	this->state = state;
 }
 
 void Coin::setPlayerIndex(int playerIndex)

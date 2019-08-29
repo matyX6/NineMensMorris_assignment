@@ -13,7 +13,7 @@ void instanceSingletons()
 int main()
 {
 	instanceSingletons();
-	srand(time(NULL));
+	srand(static_cast<unsigned int>(time(NULL)));
 
 	sf::RenderWindow window(sf::VideoMode(600, 600), "NineMensMorris", sf::Style::Close);
 

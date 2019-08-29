@@ -2,10 +2,20 @@
 #include "Resources.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
+
+enum class CoinState
+{
+	UNPLACED,
+	PLACED,
+	REMOVED
+};
+
 class Coin
 {
 private:
-	int playerIndex;
+	int playerIndex = -1;
+	int n = -1;
+	CoinState state;
 	sf::Vector2f position;
 	sf::Vector2f homePosition;
 	sf::RectangleShape background;
@@ -15,16 +25,15 @@ private:
 	bool selected = false;
 	bool selectToggler = false;
 	bool disabled = true;
-	bool removed = false;
 
 	void setPlayerIndex(int playerIndex);
 
 public:
-	Coin(int playerIndex, sf::Vector2f position);
+	Coin(int n, int playerIndex, sf::Vector2f position);
 	void update(sf::RenderWindow &window);
 	void draw(sf::RenderWindow &window);
 	void setPosition(sf::Vector2f position);
-	bool isJustPressed();
+	void goHome();
 	void setBackground(sf::Texture &texture);
 	void enable();
 	void disable();
@@ -32,10 +41,12 @@ public:
 	void select();
 	void deselect();
 	bool isSelected();
-	void goHome();
-	void reset();
+	bool isJustPressed();
 	int getPlayerIndex();
+	void reset();
 	void remove();
 	bool isRemoved();
+	CoinState getState();
+	void setState(CoinState state);
 };
 

@@ -5,9 +5,9 @@
 
 enum class GameState
 {
-	PLACE,
-	MOVE,
-	REMOVE,
+	PLACING,
+	MOVING,
+	REMOVING,
 	GAMEOVER
 };
 
@@ -17,27 +17,18 @@ private:
 	Board board;
 	std::vector<Button*> buttons;
 
-	int numberOfPlayers;
-	int currentPlayerIndex;
-	int numberOfCoins;
-	int currentNumberOfCoins;
-	int numberOfWhiteCoins;
-	int numberOfBlackCoins;
+	int numberOfPlayers = 2;
+	int numberOfCoinsPerPlayer = 9;
+	int currentPlayerIndex = -1;
 	GameState state;
-	GameState nextState;
 	sf::RectangleShape background;
 
 public:
 	Game();
-	~Game();
 	void update(sf::RenderWindow &window);
 	void draw(sf::RenderWindow &window);
 
-	void setBackground(sf::Texture &texture);
 	void reset();
-	void increaseCurrentNumberOfCoins();
-	int getNumberOfPlayerCoins(int playerIndex);
-	int getCurrentNumberOfCoins();
+	void setBackground(sf::Texture &texture);
 	void advanceCurrentPlayerIndex();
 };
-
