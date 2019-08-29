@@ -10,10 +10,12 @@ private:
 	sf::Vector2f homePosition;
 	sf::RectangleShape background;
 	sf::RectangleShape textureSelected;
-	bool justPressed;
-	bool selected;
-	bool selectToggler;
-	bool disabled;
+	sf::Sound soundRemoved;
+	bool justPressed = false;
+	bool selected = false;
+	bool selectToggler = false;
+	bool disabled = true;
+	bool removed = false;
 
 	void setPlayerIndex(int playerIndex);
 
@@ -33,5 +35,7 @@ public:
 	void goHome();
 	void reset();
 	int getPlayerIndex();
+	void remove();
+	bool isRemoved();
 };
 

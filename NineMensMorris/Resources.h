@@ -5,8 +5,8 @@
 enum class AudioResourceType
 {
 	BUTTON_PRESSED,
-	BUTTON_HOVER
-
+	BUTTON_HOVER,
+	COIN_REMOVED
 };
 
 enum class TextureResourceType
@@ -33,6 +33,7 @@ class Resources
 private:
 	sf::SoundBuffer soundButtonPressed;
 	sf::SoundBuffer soundButtonHover;
+	sf::SoundBuffer soundCoinDisabled;
 
 	sf::Texture textureBackground;
 	sf::Texture textureBoard;

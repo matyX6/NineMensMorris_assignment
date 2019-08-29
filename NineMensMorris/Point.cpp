@@ -130,6 +130,11 @@ void Point::linkCoin(Coin *coin)
 	this->coin = coin;
 }
 
+void Point::unlinkCoin()
+{
+	coin = nullptr;
+}
+
 Coin * Point::getLinkedCoin()
 {
 	return coin;

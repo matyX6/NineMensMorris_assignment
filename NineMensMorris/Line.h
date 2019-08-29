@@ -7,6 +7,7 @@ class Line
 {
 private:
 	std::vector<Point *> points;
+	bool disabled = false;
 
 public:
 	Line();
@@ -14,5 +15,9 @@ public:
 	int getCompletedPlayerIndex();
 	void addPoint(Point *point);
 	void printPoints();
+	bool isDisabled();
+	void disable();
+	void enable();
+	void refresh();
 };
 

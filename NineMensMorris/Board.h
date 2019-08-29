@@ -16,7 +16,7 @@ private:
 	sf::RectangleShape background;
 	Coin *selectedCoin;
 	bool justPlacedCoin;
-	int currentPlayerIndex;
+	bool justSelectedCoin;
 
 public:
 	Board(sf::Vector2f position);
@@ -30,5 +30,18 @@ public:
 	void selectCoinFromStack(int playerIndex, int coinIndex);
 	void reset();
 	bool hasJustPlacedCoin();
-	void checkLines();
+	bool hasJustSelectedCoin();
+	void printLines();
+	bool hasLine();
+	bool hasLineWithPlayerIndex(int playerIndex);
+	void disableLineWithPlayerIndex(int playerIndex);
+	void disableLinesWithPlayerIndex(int playerIndex);
+	int getLinePlayerIndex();
+	void deselectCoin();
+	void enablePlayerPoints(int playerIndex);
+	void removeSelectedCoin();
+	void disableAllCoins();
+	void enableRemainingPoints();
+	void unlinkDisabledCoins();
+	void refreshLines();
 };

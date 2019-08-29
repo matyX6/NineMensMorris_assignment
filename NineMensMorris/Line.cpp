@@ -39,3 +39,23 @@ void Line::printPoints()
 		std::cout << point->getId() << " ";
 	}
 }
+
+bool Line::isDisabled()
+{
+	return disabled;
+}
+
+void Line::disable()
+{
+	disabled = true;
+}
+
+void Line::enable()
+{
+	disabled = false;
+}
+
+void Line::refresh()
+{
+	if (!isCompleted()) { enable(); }
+}

@@ -11,6 +11,7 @@ Resources::Resources()
 {
 	// load audio resources
 	soundButtonPressed.loadFromFile("./audio/button-pressed.wav");
+	soundCoinDisabled.loadFromFile("./audio/coin-removed.wav");
 
 	// load texture resources
 	textureBackground.loadFromFile("./textures/background.png");
@@ -38,6 +39,8 @@ sf::SoundBuffer & Resources::sound(AudioResourceType type)
 	{
 	case AudioResourceType::BUTTON_PRESSED:
 		return soundButtonPressed;
+	case AudioResourceType::COIN_REMOVED:
+		return soundCoinDisabled;
 	}
 }
 

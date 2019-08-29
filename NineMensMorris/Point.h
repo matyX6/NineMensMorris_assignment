@@ -41,6 +41,7 @@ public:
 	void moveTo(sf::Vector2f position);
 	void reset();
 	void linkCoin(Coin *coin);
+	void unlinkCoin();
 	Coin *getLinkedCoin();
 
 	void printConnections()

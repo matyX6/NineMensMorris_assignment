@@ -35,17 +35,38 @@ void Game::update(sf::RenderWindow &window)
 	case GameState::PLACE:
 		if (board.hasJustPlacedCoin()) 
 		{
-			// check lines
-			// check count
 			switch (currentPlayerIndex) 
 			{
 			case 0:
 				numberOfWhiteCoins++;
+				break;
 			case 1:
 				numberOfBlackCoins++;
+				break;
 			}
 			currentNumberOfCoins++;
 
+			//check lines
+			if (board.hasLineWithPlayerIndex(currentPlayerIndex))
+			{
+				//change to remove state
+				board.disableAllPoints();
+				switch (currentPlayerIndex)
+				{
+				case 0:
+					board.enablePlayerPoints(1);
+					break;
+				case 1:
+					board.enablePlayerPoints(0);
+					break;
+				}
+
+				board.disableLinesWithPlayerIndex(currentPlayerIndex);
+				state = GameState::REMOVE;
+				return;
+			}
+
+			//check count
 			if (!(currentNumberOfCoins < numberOfCoins)) 
 			{
 				board.disableAllPoints();
@@ -62,6 +83,24 @@ void Game::update(sf::RenderWindow &window)
 	case GameState::MOVE:
 		break;
 	case GameState::REMOVE:
+		if (board.hasJustSelectedCoin())
+		{
+			board.removeSelectedCoin();
+			advanceCurrentPlayerIndex();
+
+			//update counters...
+
+			//check if still has to place stuff
+			if (currentNumberOfCoins < numberOfCoins)
+			{
+				board.disableAllCoins();
+				board.unlinkDisabledCoins();
+				board.enableRemainingPoints();
+				board.refreshLines();
+				board.selectCoinFromStack(currentPlayerIndex, currentNumberOfCoins / 2);
+				state = GameState::PLACE;
+			}
+		}
 		break;
 	case GameState::GAMEOVER:
 		break;

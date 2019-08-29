@@ -239,6 +239,7 @@ Board::Board(sf::Vector2f position)
 void Board::update(sf::RenderWindow &window)
 {
 	justPlacedCoin = false;
+	justSelectedCoin = false;
 
 	//check point clicks
 
@@ -254,10 +255,29 @@ void Board::update(sf::RenderWindow &window)
 				selectedCoin = nullptr;
 				justPlacedCoin = true;
 
-				checkLines();
+				printLines();
 			}
 		}
 	}
+
+	// check coin selects
+	for (auto coin : coinsWhite) 
+	{
+		if (coin->isJustPressed()) 
+		{
+			justSelectedCoin = true;
+			selectedCoin = coin;
+		}
+	}
+	for (auto coin : coinsBlack) 
+	{
+		if (coin->isJustPressed()) 
+		{
+			justSelectedCoin = true;
+			selectedCoin = coin;
+		}
+	}
+
 	for (auto point : points)
 	{
 		point->update(window);
@@ -351,6 +371,12 @@ void Board::reset()
 		point->reset();
 	}
 
+	//enable lines
+	for (auto line : lines)
+	{
+		line->enable();
+	}
+
 	enableAllPoints();
 	selectedCoin = nullptr;
 
@@ -362,7 +388,12 @@ bool Board::hasJustPlacedCoin()
 	return justPlacedCoin;
 }
 
-void Board::checkLines()
+bool Board::hasJustSelectedCoin()
+{
+	return justSelectedCoin;
+}
+
+void Board::printLines()
 {
 	std::cout << "Checking lines...\n";
 	for (auto line : lines)
@@ -373,5 +404,136 @@ void Board::checkLines()
 			line->printPoints();
 			std::cout << "] completed (" << line->getCompletedPlayerIndex() << ").\n";
 		}
+	}
+}
+
+bool Board::hasLine()
+{
+	for (auto line : lines) 
+	{
+		if (line->isCompleted() && !line->isDisabled()) 
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool Board::hasLineWithPlayerIndex(int playerIndex)
+{
+	for (auto line : lines) 
+	{
+		if (line->isCompleted() && line->getCompletedPlayerIndex() == playerIndex
+			&& !line->isDisabled()) 
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Board::disableLineWithPlayerIndex(int playerIndex)
+{
+	for (auto line : lines) 
+	{
+		if (line->isCompleted() && line->getCompletedPlayerIndex() == playerIndex
+			&& !line->isDisabled()) 
+		{
+			line->disable();
+			return;
+		}
+	}
+}
+
+void Board::disableLinesWithPlayerIndex(int playerIndex)
+{
+	for (auto line : lines)
+	{
+		if(line ->isCompleted() && line->getCompletedPlayerIndex() == playerIndex && !line->isDisabled())
+		{
+			line->disable();
+		}
+	}
+}
+
+int Board::getLinePlayerIndex()
+{
+	for (auto line : lines) 
+	{
+		if (line->isCompleted()) 
+		{
+			return line->getCompletedPlayerIndex();
+		}
+	}
+
+	return -1;
+}
+
+void Board::deselectCoin()
+{
+	selectedCoin->deselect();
+	selectedCoin = nullptr;
+}
+
+void Board::enablePlayerPoints(int playerIndex)
+{
+	switch (playerIndex) 
+	{
+	case 0:
+		for (auto coin : coinsWhite) 
+		{
+			coin->enable();
+		}
+		break;
+	case 1:
+		for (auto coin : coinsBlack) 
+		{
+			coin->enable();
+		}
+		break;
+	}
+}
+
+void Board::removeSelectedCoin()
+{
+	if (selectedCoin != nullptr) 
+	{
+		selectedCoin->remove();
+		selectedCoin = nullptr;
+	}
+}
+
+void Board::disableAllCoins()
+{
+	for (auto coin : coinsWhite) { coin->disable(); }
+	for (auto coin : coinsBlack) { coin->disable(); }
+}
+
+void Board::enableRemainingPoints()
+{
+	for (auto point : points) 
+	{
+		if (point->getLinkedCoin() == nullptr) { point->enable(); }
+	}
+}
+
+void Board::unlinkDisabledCoins()
+{
+	for (auto point : points) 
+	{
+		if (point->getLinkedCoin() != nullptr and point->getLinkedCoin()->isRemoved()) 
+		{
+			point->unlinkCoin();
+		}
+	}
+}
+
+void Board::refreshLines()
+{
+	for (auto line : lines) 
+	{
+		line->refresh();
 	}
 }

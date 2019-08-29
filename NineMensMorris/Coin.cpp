@@ -8,13 +8,11 @@ Coin::Coin(int playerIndex, sf::Vector2f position)
 	textureSelected.setOrigin(sf::Vector2f(30.0f, 30.0f));
 	background.setTexture(&Resources::get().texture(TextureResourceType::COIN_WHITE));
 	textureSelected.setTexture(&Resources::get().texture(TextureResourceType::COIN_SELECTED));
+	soundRemoved.setBuffer(Resources::get().sound(AudioResourceType::COIN_REMOVED));
 
 	setPlayerIndex(playerIndex);
 	setPosition(position);
 	homePosition = position;
-	deselect();
-	disable();
-
 }
 
 void Coin::update(sf::RenderWindow & window)
@@ -40,6 +38,7 @@ void Coin::update(sf::RenderWindow & window)
 			if (selectToggler) 
 			{
 				selected = !selected;
+				justPressed = true;
 			}
 		}
 	}
@@ -111,11 +110,26 @@ void Coin::reset()
 	goHome();
 	disable();
 	deselect();
+	removed = false;
 }
 
 int Coin::getPlayerIndex()
 {
 	return playerIndex;
+}
+
+void Coin::remove()
+{
+	deselect();
+	disable();
+	setPosition(sf::Vector2f(-1000.0f, -1000.0f));
+	removed = true;
+	soundRemoved.play();
+}
+
+bool Coin::isRemoved()
+{
+	return removed;
 }
 
 void Coin::setPlayerIndex(int playerIndex)
