@@ -43,6 +43,8 @@ public:
 	void linkCoin(Coin *coin);
 	void unlinkCoin();
 	Coin *getLinkedCoin();
+	bool hasLinkedCoin();
+	void enableFreeConnectedPoints();
 
 	void printConnections()
 	{

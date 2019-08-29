@@ -1,4 +1,5 @@
 #include "Coin.h"
+#include "Point.h"
 
 Coin::Coin(int playerIndex, int n, sf::Vector2f position)
 {
@@ -63,6 +64,11 @@ void Coin::setPosition(sf::Vector2f position)
 	textureSelected.setPosition(position);
 }
 
+sf::Vector2f Coin::getPosition()
+{
+	return position;
+}
+
 bool Coin::isJustPressed()
 {
 	return justPressed;
@@ -123,10 +129,15 @@ int Coin::getPlayerIndex()
 
 void Coin::remove()
 {
+	std::cout << "Removed coin!\n";
 	disable();
 	deselect();
 	setPosition(sf::Vector2f(-1000.0f, -1000.0f));
 	setState(CoinState::REMOVED);
+	linkedPoint->unlinkCoin();
+	std::cout << "Linked point? " << linkedPoint->hasLinkedCoin();
+	unlinkPoint();
+	std::cout << "Linked coin?" << hasLinkedPoint();
 	soundRemoved.play();
 }
 
@@ -143,6 +154,26 @@ CoinState Coin::getState()
 void Coin::setState(CoinState state)
 {
 	this->state = state;
+}
+
+void Coin::linkPoint(Point * point)
+{
+	linkedPoint = point;
+}
+
+Point * Coin::getLinkedPoint()
+{
+	return linkedPoint;
+}
+
+void Coin::unlinkPoint()
+{
+	linkedPoint = nullptr;
+}
+
+bool Coin::hasLinkedPoint()
+{
+	return (linkedPoint != nullptr);
 }
 
 void Coin::setPlayerIndex(int playerIndex)

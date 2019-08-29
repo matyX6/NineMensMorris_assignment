@@ -8,7 +8,9 @@ enum class CoinState
 	UNPLACED,
 	PLACED,
 	REMOVED
-};
+}; 
+
+class Point;
 
 class Coin
 {
@@ -25,6 +27,7 @@ private:
 	bool selected = false;
 	bool selectToggler = false;
 	bool disabled = true;
+	Point *linkedPoint = nullptr;
 
 	void setPlayerIndex(int playerIndex);
 
@@ -33,6 +36,7 @@ public:
 	void update(sf::RenderWindow &window);
 	void draw(sf::RenderWindow &window);
 	void setPosition(sf::Vector2f position);
+	sf::Vector2f getPosition();
 	void goHome();
 	void setBackground(sf::Texture &texture);
 	void enable();
@@ -48,5 +52,9 @@ public:
 	bool isRemoved();
 	CoinState getState();
 	void setState(CoinState state);
+	void linkPoint(Point *point);
+	Point *getLinkedPoint();
+	void unlinkPoint();
+	bool hasLinkedPoint();
 };
 

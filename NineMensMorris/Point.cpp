@@ -140,4 +140,20 @@ Coin * Point::getLinkedCoin()
 	return coin;
 }
 
+bool Point::hasLinkedCoin()
+{
+	return !(coin == nullptr);
+}
+
+void Point::enableFreeConnectedPoints()
+{
+	for (auto point : connectedPoints)
+	{
+		if (!point->hasLinkedCoin())
+		{
+			point->enable();
+		}
+	}
+}
+
 

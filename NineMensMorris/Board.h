@@ -1,27 +1,28 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "Resources.h"
 #include "Point.h"
 #include "Coin.h"
 #include "Line.h"
+#include <SFML/Graphics.hpp>
 #include <vector>
 
 class Board
 {
 private:
 	sf::Vector2f position;
-	std::vector<Point*> points;
-	std::vector<Coin*> coins;
-	std::vector<Line*> lines;
+	std::vector<Point *> points;
+	std::vector<Coin *> coins;
+	std::vector<Line *> lines;
 	sf::RectangleShape background;
 	Coin *selectedCoin = nullptr;
 	bool justPlacedCoin = false;
-	bool justSelectedCoin = false;
+	Coin *justSelectedCoin = nullptr;
+	Point *justSelectedPoint = nullptr;
 
 public:
 	Board(sf::Vector2f position);
 	void update(sf::RenderWindow &window);
 	void draw(sf::RenderWindow &window);
-
 	void setup();
 	void setBackground(sf::Texture &texture);
 	void setPosition(sf::Vector2f position);
@@ -31,7 +32,6 @@ public:
 	bool hasUnplacedCoin();
 	void reset();
 	bool hasJustPlacedCoin();
-	bool hasJustSelectedCoin();
 	void printLines();
 	bool hasLine();
 	bool hasLineWithPlayerIndex(int playerIndex);
@@ -40,9 +40,20 @@ public:
 	int getLinePlayerIndex();
 	void deselectCoin();
 	void enablePlayerCoins(int playerIndex);
-	void removeSelectedCoin();
 	void disableAllCoins();
 	void enableRemainingPoints();
 	void unlinkDisabledCoins();
 	void refreshLines();
+	bool hasSelectedCoin();
+	Coin *getSelectedCoin();
+	Point *getPointWithSelectedCoin();
+	void moveSelectedCoinToPoint(Point *point);
+	void placeSelectedCoin(Point *point);
+	void setSelectedCoin(Coin *coin);
+
+	bool hasJustSelectedCoin();
+	Coin *getJustSelectedCoin();
+
+	bool hasJustSelectedPoint();
+	Point *getJustSelectedPoint();
 };
