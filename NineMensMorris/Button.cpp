@@ -14,6 +14,7 @@ Button::Button(sf::Vector2f position, sf::String text)
 	background.setSize(sf::Vector2f(120.0f, 60.0f));
 	soundPressed.setBuffer(Resources::get().sound(SoundResourceType::BUTTON_PRESSED));
 	this->text.setFont(Resources::get().font(FontResourceType::MAIN));
+	this->text.setCharacterSize(16.0f);
 	justPressed = false;
 	setState(ButtonState::NORMAL);
 	setText(text);
@@ -120,7 +121,6 @@ void Button::setPosition(sf::Vector2f position)
 void Button::setText(sf::String string)
 {
 	text.setString(string);
-	text.setCharacterSize(16.0f);
 	centerText();
 }
 sf::String Button::getText()

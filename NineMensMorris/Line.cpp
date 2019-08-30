@@ -59,3 +59,11 @@ void Line::refresh()
 {
 	if (!isCompleted()) { enable(); }
 }
+
+void Line::selectCoins()
+{
+	for (auto point : points)
+	{
+		point->getLinkedCoin()->select();
+	}
+}

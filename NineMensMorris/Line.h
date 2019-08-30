@@ -19,5 +19,6 @@ public:
 	void disable();
 	void enable();
 	void refresh();
+	void selectCoins();
 };
 

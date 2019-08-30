@@ -18,7 +18,7 @@ Coin::Coin(int playerIndex, int n, sf::Vector2f position)
 	homePosition = position;
 
 	state = CoinState::UNPLACED;
-	pressState = PressState::NORMAL;
+	pressState = PressState::DISABLED;
 }
 
 void Coin::update(sf::RenderWindow & window)
@@ -221,6 +221,7 @@ void Coin::reset()
 	disable();
 	deselect();
 	state = CoinState::UNPLACED;
+	updateBackground();
 }
 
 int Coin::getPlayerIndex()

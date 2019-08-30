@@ -39,6 +39,7 @@ public:
 	void disableLinesWithPlayerIndex(int playerIndex);
 	int getLinePlayerIndex();
 	void deselectCoin();
+	void deselectAllCoins();
 	void enablePlayerCoins(int playerIndex);
 	void disableAllCoins();
 	void enableRemainingPoints();
@@ -51,6 +52,7 @@ public:
 	void placeSelectedCoin(Point *point);
 	void setSelectedCoin(Coin *coin);
 	int getNumberOfPlayerUnremovedCoins(int playerIndex);
+	void selectPlayerLineCoins(int playerIndex);
 
 	bool hasJustSelectedCoin();
 	Coin *getJustSelectedCoin();

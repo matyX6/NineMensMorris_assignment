@@ -419,6 +419,14 @@ void Board::deselectCoin()
 	selectedCoin = nullptr;
 }
 
+void Board::deselectAllCoins()
+{
+	for (auto coin : coins)
+	{
+		coin->deselect();
+	}
+}
+
 void Board::enablePlayerCoins(int playerIndex)
 {
 	for (auto coin : coins) 
@@ -535,4 +543,15 @@ int Board::getNumberOfPlayerUnremovedCoins(int playerIndex)
 		}
 	}
 	return count;
+}
+
+void Board::selectPlayerLineCoins(int playerIndex)
+{
+	for (auto line : lines)
+	{
+		if(line->isCompleted() && line->getCompletedPlayerIndex() == playerIndex && !line->isDisabled()) 
+		{ 
+			line->selectCoins();
+		}
+	}
 }

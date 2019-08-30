@@ -35,6 +35,7 @@ void Game::update(sf::RenderWindow &window)
 			// check if new line has formed
 			if (board.hasLineWithPlayerIndex(currentPlayerIndex)) {
 				// change to REMOVE state
+				board.selectPlayerLineCoins(currentPlayerIndex);
 				board.disableAllPoints();
 				board.enablePlayerCoins(1 - currentPlayerIndex);
 				board.disableLinesWithPlayerIndex(currentPlayerIndex);
@@ -103,6 +104,7 @@ void Game::update(sf::RenderWindow &window)
 				if (board.hasLineWithPlayerIndex(currentPlayerIndex)) 
 				{
 					// change to REMOVE state
+					board.selectPlayerLineCoins(currentPlayerIndex);
 					board.disableAllPoints();
 					board.enablePlayerCoins(1 - currentPlayerIndex);
 					board.disableLinesWithPlayerIndex(currentPlayerIndex);
@@ -126,6 +128,7 @@ void Game::update(sf::RenderWindow &window)
 		{
 			//removing enemy coin
 			board.getJustSelectedCoin()->remove();
+			board.deselectAllCoins();
 
 			//checking for game over
 			std::cout << "Enemy coins left: " << board.getNumberOfPlayerUnremovedCoins(1 - currentPlayerIndex) << "\n";
