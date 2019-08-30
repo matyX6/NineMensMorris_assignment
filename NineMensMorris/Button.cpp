@@ -1,108 +1,29 @@
 #include "Button.h"
-#include "Resources.h"
 
 Button::Button()
 {
+	soundPressed.setBuffer(Resources::get().sound(SoundResourceType::BUTTON_PRESSED));
 }
 
 Button::~Button()
 {
 }
 
-Button::Button(sf::Vector2f position, sf::String text)
+void Button::update(sf::RenderWindow & window)
 {
-	background.setSize(sf::Vector2f(120.0f, 60.0f));
-	soundPressed.setBuffer(Resources::get().sound(SoundResourceType::BUTTON_PRESSED));
-	this->text.setFont(Resources::get().font(FontResourceType::MAIN));
-	this->text.setCharacterSize(16.0f);
-	justPressed = false;
-	setState(ButtonState::NORMAL);
-	setText(text);
-	setPosition(position);
+	updateMouseStates();
+	updatePressState(window);
 }
 
-void Button::update(sf::RenderWindow &window)
+void Button::draw(sf::RenderWindow & window)
 {
-	justPressed = false;
-
-	// get mouse state
-	justMousePressed = false;
-	justMouseReleased = false;
-	if (lastMousePressed != isMousePressed()) 
-	{
-		if (lastMousePressed == false) { justMousePressed = true; }
-		else { justMouseReleased = true; }
-		lastMousePressed = isMousePressed();
-	}
-
-	// states
-	switch (state)
-	{
-	case ButtonState::NORMAL:
-		if (isMouseOver(window)) 
-		{
-			if (justMousePressed) 
-			{
-				state = ButtonState::PRESSED;
-				updateBackground();
-			}
-			else {
-				if (!isMousePressed()) 
-				{
-					state = ButtonState::HOVER;
-					updateBackground();
-				}
-			}
-		}
-		break;
-	case ButtonState::HOVER:
-		if (justMousePressed) 
-		{
-			state = ButtonState::PRESSED;
-			updateBackground();
-		}
-		else {
-			if (!isMouseOver(window)) 
-			{
-				state = ButtonState::NORMAL;
-				updateBackground();
-			}
-		}
-		break;
-	case ButtonState::PRESSED:
-		if (!isMouseOver(window)) 
-		{
-			state = ButtonState::NORMAL;
-			updateBackground();
-		}
-		else 
-		{
-			if (justMouseReleased) 
-			{
-				state = ButtonState::NORMAL;
-				updateBackground();
-				justPressed = true;
-				soundPressed.play();
-			}
-		}
-		break;
-	}
+	window.draw(rect);
 }
 
-void Button::draw(sf::RenderWindow &window)
+void Button::setPosition(sf::Vector2f position)
 {
-	window.draw(background);
-	window.draw(text);
-}
-
-bool Button::isJustPressed()
-{
-	return justPressed;
-}
-
-void Button::setBackground(sf::Texture &texture)
-{
-	background.setTexture(&texture);
+	this->position = position;
+	rect.setPosition(position);
 }
 
 sf::Vector2f Button::getPosition()
@@ -110,51 +31,52 @@ sf::Vector2f Button::getPosition()
 	return position;
 }
 
-void Button::setPosition(sf::Vector2f position)
+void Button::setSize(sf::Vector2f size)
 {
-	this->position = position;
-
-	background.setPosition(position);
-	centerText();
+	this->size = size;
+	rect.setSize(size);
 }
 
-void Button::setText(sf::String string)
+sf::Vector2f Button::getSize()
 {
-	text.setString(string);
-	centerText();
-}
-sf::String Button::getText()
-{
-	return text.getString();
+	return size;
 }
 
-void Button::setState(ButtonState state) 
+void Button::setTexture(sf::Texture &texture)
 {
-	this->state = state;
+	rect.setTexture(&texture);
+}
 
-	switch (state)
+void Button::updateBackground()
+{
+	switch (pressState)
 	{
-	case ButtonState::NORMAL:
-		setBackground(Resources::get().texture(TextureResourceType::BUTTON_NORMAL));
+	case PressState::NORMAL:
+		setTexture(*textureNormal);
 		break;
-	case ButtonState::HOVER:
-		setBackground(Resources::get().texture(TextureResourceType::BUTTON_HOVER));
+	case PressState::HOVERED:
+		setTexture(*textureHovered);
 		break;
-	case ButtonState::PRESSED:
-		setBackground(Resources::get().texture(TextureResourceType::BUTTON_PRESSED));
-		justPressed = true;
-		soundPressed.play();
+	case PressState::PRESSED:
+		setTexture(*texturePressed);
 		break;
-	default:
+	case PressState::DISABLED:
+		setTexture(*textureDisabled);
 		break;
 	}
+}
+
+void Button::setPressState(PressState state)
+{
+	pressState = state;
+	updateBackground();
 }
 
 bool Button::isMouseOver(sf::RenderWindow & window)
 {
 	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 	sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
-	return background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat));
+	return rect.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat));
 }
 
 bool Button::isMousePressed()
@@ -162,28 +84,74 @@ bool Button::isMousePressed()
 	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 }
 
-void Button::updateBackground()
+bool Button::isJustPressed()
 {
-	switch (state)
+	return justPressed;
+}
+
+void Button::updateMouseStates()
+{
+	justPressed = false;
+	justMousePressed = false;
+	justMouseReleased = false;
+
+	if (lastMousePressed != isMousePressed()) 
 	{
-	case ButtonState::NORMAL:
-		setBackground(Resources::get().texture(TextureResourceType::BUTTON_NORMAL));
-		break;
-	case ButtonState::HOVER:
-		setBackground(Resources::get().texture(TextureResourceType::BUTTON_HOVER));
-		break;
-	case ButtonState::PRESSED:
-		setBackground(Resources::get().texture(TextureResourceType::BUTTON_PRESSED));
-		break;
+		if (lastMousePressed == false) { justMousePressed = true; }
+		else { justMouseReleased = true; }
+		lastMousePressed = isMousePressed();
 	}
 }
 
-void Button::centerText() 
+void Button::updatePressState(sf::RenderWindow &window)
 {
-	sf::Vector2f textureHalfSize(background.getGlobalBounds().width * 0.5f,
-		background.getGlobalBounds().height * 0.5f);
-	sf::Vector2f textHalfSize(text.getGlobalBounds().width * 0.5f,
-		text.getGlobalBounds().height * 0.5f);
-	sf::Vector2f offsetFix(0.0f, text.getLocalBounds().top);
-	text.setPosition(position + textureHalfSize - textHalfSize - offsetFix);
+	justPressed = false;
+
+	switch (pressState)
+	{
+	case PressState::NORMAL:
+		if (isMouseOver(window)) 
+		{
+			if (justMousePressed) 
+			{
+				setPressState(PressState::PRESSED);
+			}
+			else 
+			{
+				if (!isMousePressed()) 
+				{
+					setPressState(PressState::HOVERED);
+				}
+			}
+		}
+		break;
+	case PressState::HOVERED:
+		if (justMousePressed)
+		{
+			setPressState(PressState::PRESSED);
+		}
+		else
+		{
+			if (!isMouseOver(window))
+			{
+				setPressState(PressState::NORMAL);
+			}
+		}
+		break;
+	case PressState::PRESSED:
+		if (!isMouseOver(window)) 
+		{
+			setPressState(PressState::NORMAL);
+		}
+		else
+		{
+			if (justMouseReleased) 
+			{
+				setPressState(PressState::NORMAL);
+				justPressed = true;
+				soundPressed.play();
+			}
+		}
+		break;
+	}
 }

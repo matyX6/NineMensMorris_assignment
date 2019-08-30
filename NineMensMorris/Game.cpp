@@ -10,8 +10,15 @@ Game::Game()
 	background.setSize(sf::Vector2f(600.0f, 600.0f));
 	setBackground(Resources::get().texture(TextureResourceType::BACKGROUND));
 
-	buttons.push_back(new Button(sf::Vector2f(20.0f, 520.0f), "RESTART"));
-	buttons.push_back(new Button(sf::Vector2f(460.0f, 520.0f), "QUIT"));
+	// creating menu buttons
+	MenuButton *b1 = new MenuButton();
+	b1->setPosition(sf::Vector2f(20.0f, 520.0f));
+	b1->setText("RESTART");
+	buttons.push_back(b1);
+	MenuButton *b2 = new MenuButton();
+	b2->setPosition(sf::Vector2f(460.0f, 520.0f));
+	b2->setText("QUIT");
+	buttons.push_back(b2);
 
 	state = GameState::GAMEOVER;
 
@@ -28,12 +35,14 @@ void Game::update(sf::RenderWindow &window)
 	{
 		// -------------------------------------------------------------------------------------------------
 	case GameState::PLACING:
-		if (board.hasJustSelectedPoint()) {
+		if (board.hasJustSelectedPoint()) 
+		{
 			// place coin
 			board.placeSelectedCoin(board.getJustSelectedPoint());
 
 			// check if new line has formed
-			if (board.hasLineWithPlayerIndex(currentPlayerIndex)) {
+			if (board.hasLineWithPlayerIndex(currentPlayerIndex)) 
+			{
 				// change to REMOVE state
 				board.selectPlayerLineCoins(currentPlayerIndex);
 				board.disableAllPoints();
@@ -45,14 +54,16 @@ void Game::update(sf::RenderWindow &window)
 			}
 
 			// check count
-			if (board.hasUnplacedCoin()) {
+			if (board.hasUnplacedCoin()) 
+			{
 				// keep state
 				advanceCurrentPlayerIndex();
 				board.selectUnplacedCoin(currentPlayerIndex);
 				updatePlayerText();
 				textStatus.setText("PLACE YOUR COIN");
 			}
-			else {
+			else 
+			{
 				// all done, proceed to MOVING state
 				board.disableAllPoints();
 				advanceCurrentPlayerIndex();
@@ -66,8 +77,10 @@ void Game::update(sf::RenderWindow &window)
 		break;
 		// -------------------------------------------------------------------------------------------------
 	case GameState::MOVING:
-		if (board.hasJustSelectedCoin()) {
-			if (board.hasSelectedCoin()) {
+		if (board.hasJustSelectedCoin()) 
+		{
+			if (board.hasSelectedCoin()) 
+			{
 				// undo move intention
 				board.getSelectedCoin()->deselect();
 				board.setSelectedCoin(nullptr);
@@ -76,7 +89,8 @@ void Game::update(sf::RenderWindow &window)
 				updatePlayerText();
 				textStatus.setText("SELECT AND MOVE COIN");
 			}
-			else {
+			else 
+			{
 				// select new coin
 				board.disableAllCoins();
 				board.getJustSelectedCoin()->enable(); // allow for undo

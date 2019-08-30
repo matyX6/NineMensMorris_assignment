@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Button.h"
+#include "MenuButton.h"
 #include "Board.h"
 #include "Text.h"
 
@@ -16,7 +16,7 @@ class Game
 {
 private:
 	Board board;
-	std::vector<Button*> buttons;
+	std::vector<MenuButton*> buttons;
 	Text textPlayer;
 	Text textStatus;
 

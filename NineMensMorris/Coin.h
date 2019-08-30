@@ -10,7 +10,7 @@ enum class CoinState
 	REMOVED,
 };
 
-enum class PressState 
+enum class PressState2 
 {
 	NORMAL, HOVER, PRESSED, DISABLED
 };
@@ -23,7 +23,7 @@ private:
 	int playerIndex = -1;
 	int n = -1;
 	CoinState state;
-	PressState pressState;
+	PressState2 pressState;
 	sf::Vector2f position;
 	sf::Vector2f homePosition;
 	sf::RectangleShape background;

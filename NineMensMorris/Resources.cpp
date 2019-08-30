@@ -17,7 +17,7 @@ void Resources::loadAllResources()
 	textures[TextureResourceType::BACKGROUND].loadFromFile("./textures/background.png");
 	textures[TextureResourceType::BOARD].loadFromFile("./textures/board.png");
 	textures[TextureResourceType::BUTTON_NORMAL].loadFromFile("./textures/button-normal.png");
-	textures[TextureResourceType::BUTTON_HOVER].loadFromFile("./textures/button-hover.png");
+	textures[TextureResourceType::BUTTON_HOVERED].loadFromFile("./textures/button-hover.png");
 	textures[TextureResourceType::BUTTON_PRESSED].loadFromFile("./textures/button-pressed.png");
 	textures[TextureResourceType::POINT_NORMAL].loadFromFile("./textures/point-normal.png");
 	textures[TextureResourceType::POINT_HOVER].loadFromFile("./textures/point-hover.png");

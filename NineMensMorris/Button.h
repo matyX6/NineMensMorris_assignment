@@ -4,44 +4,52 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 
-enum class ButtonState 
+enum class PressState 
 {
-	NORMAL, HOVER, PRESSED, DISABLED
+	NORMAL, HOVERED, PRESSED, DISABLED
 };
 
 class Button
 {
-	// variables
 public:
-private:
-	ButtonState state;
+protected:
+	sf::Vector2f size;
 	sf::Vector2f position;
-	sf::Text text;
-	sf::RectangleShape background;
+	sf::RectangleShape rect;
 	sf::Sound soundPressed;
-	bool justPressed;
+
+	sf::Texture *textureNormal;
+	sf::Texture *textureHovered;
+	sf::Texture *texturePressed;
+	sf::Texture *textureDisabled;
+
+	PressState pressState = PressState::NORMAL;
+
+	bool justPressed = false;
+
 	bool lastMousePressed = false;
 	bool justMousePressed = false;
 	bool justMouseReleased = false;
 
-	// methods
+	void updateMouseStates();
+	void updatePressState(sf::RenderWindow &window);
+
 public:
 	Button();
 	~Button();
-	Button(sf::Vector2f position, sf::String text);
 	void update(sf::RenderWindow &window);
 	void draw(sf::RenderWindow &window);
+
 	void setPosition(sf::Vector2f position);
 	sf::Vector2f getPosition();
-	void setBackground(sf::Texture &texture);
-	void setText(sf::String string);
-	sf::String getText();
-	bool isJustPressed();
-	void setState(ButtonState state);
-	bool isMouseOver(sf::RenderWindow &window);
-	bool isMousePressed();
+	void setSize(sf::Vector2f size);
+	sf::Vector2f getSize();
+	void setTexture(sf::Texture &texture);
 	void updateBackground();
 
-private:
-	void centerText();
+	void setPressState(PressState state);
+	bool isMouseOver(sf::RenderWindow &window);
+	bool isMousePressed();
+
+	bool isJustPressed();
 };

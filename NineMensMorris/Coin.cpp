@@ -18,7 +18,7 @@ Coin::Coin(int playerIndex, int n, sf::Vector2f position)
 	homePosition = position;
 
 	state = CoinState::UNPLACED;
-	pressState = PressState::DISABLED;
+	pressState = PressState2::DISABLED;
 }
 
 void Coin::update(sf::RenderWindow & window)
@@ -38,57 +38,57 @@ void Coin::update(sf::RenderWindow & window)
 	// press states
 	switch (pressState)
 	{
-	case PressState::NORMAL:
+	case PressState2::NORMAL:
 		if (isMouseOver(window)) 
 		{
 			if (justMousePressed) 
 			{
-				pressState = PressState::PRESSED;
+				pressState = PressState2::PRESSED;
 				updateBackground();
 			}
 			else 
 			{
 				if (!isMousePressed()) 
 				{
-					pressState = PressState::HOVER;
+					pressState = PressState2::HOVER;
 					updateBackground();
 				}
 			}
 		}
 		break;
-	case PressState::HOVER:
+	case PressState2::HOVER:
 		if (justMousePressed) 
 		{
-			pressState = PressState::PRESSED;
+			pressState = PressState2::PRESSED;
 			updateBackground();
 		}
 		else 
 		{
 			if (!isMouseOver(window)) 
 			{
-				pressState = PressState::NORMAL;
+				pressState = PressState2::NORMAL;
 				updateBackground();
 			}
 		}
 		break;
-	case PressState::PRESSED:
-		if (!isMouseOver(window)) 
+	case PressState2::PRESSED:
+		if (!isMouseOver(window))
 		{
-			pressState = PressState::NORMAL;
+			pressState = PressState2::NORMAL;
 			updateBackground();
 		}
 		else 
 		{
 			if (justMouseReleased) 
 			{
-				pressState = PressState::NORMAL;
+				pressState = PressState2::NORMAL;
 				updateBackground();
 				justPressed = true;
 				selected = !selected;
 			}
 		}
 		break;
-	case PressState::DISABLED:
+	case PressState2::DISABLED:
 		break;
 	}
 }
@@ -121,45 +121,43 @@ bool Coin::isJustPressed()
 
 void Coin::updateBackground()
 {
-	if (playerIndex == 0) 
+	if (playerIndex == 0)
 	{
 		switch (pressState)
 		{
-		case PressState::NORMAL:
+		case PressState2::NORMAL:
 			setBackground(Resources::get().texture(TextureResourceType::COIN_WHITE_NORMAL));
 			break;
-		case PressState::HOVER:
+		case PressState2::HOVER:
 			setBackground(Resources::get().texture(TextureResourceType::COIN_WHITE_HOVER));
 			break;
-		case PressState::PRESSED:
+		case PressState2::PRESSED:
 			setBackground(Resources::get().texture(TextureResourceType::COIN_WHITE_PRESSED));
 			break;
-		case PressState::DISABLED:
+		case PressState2::DISABLED:
 			if (state == CoinState::UNPLACED) 
 			{
 				setBackground(Resources::get().texture(TextureResourceType::COIN_WHITE_NORMAL));
 			}
-			else 
-			{
+			else {
 				setBackground(Resources::get().texture(TextureResourceType::COIN_WHITE_DISABLED));
 			}
 			break;
 		}
 	}
-	else 
-	{
+	else {
 		switch (pressState)
 		{
-		case PressState::NORMAL:
+		case PressState2::NORMAL:
 			setBackground(Resources::get().texture(TextureResourceType::COIN_BLACK_NORMAL));
 			break;
-		case PressState::HOVER:
+		case PressState2::HOVER:
 			setBackground(Resources::get().texture(TextureResourceType::COIN_BLACK_HOVER));
 			break;
-		case PressState::PRESSED:
+		case PressState2::PRESSED:
 			setBackground(Resources::get().texture(TextureResourceType::COIN_BLACK_PRESSED));
 			break;
-		case PressState::DISABLED:
+		case PressState2::DISABLED:
 			if (state == CoinState::UNPLACED) 
 			{
 				setBackground(Resources::get().texture(TextureResourceType::COIN_BLACK_NORMAL));
@@ -180,19 +178,19 @@ void Coin::setBackground(sf::Texture & texture)
 
 void Coin::enable()
 {
-	pressState = PressState::NORMAL;
+	pressState = PressState2::NORMAL;
 	updateBackground();
 }
 
 void Coin::disable()
 {
-	pressState = PressState::DISABLED;
+	pressState = PressState2::DISABLED;
 	updateBackground();
 }
 
 bool Coin::isEnabled()
 {
-	return pressState != PressState::DISABLED;
+	return pressState != PressState2::DISABLED;
 }
 
 void Coin::select()
