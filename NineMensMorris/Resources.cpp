@@ -20,7 +20,7 @@ void Resources::loadAllResources()
 	textures[TextureResourceType::BUTTON_HOVERED].loadFromFile("./textures/button-hover.png");
 	textures[TextureResourceType::BUTTON_PRESSED].loadFromFile("./textures/button-pressed.png");
 	textures[TextureResourceType::POINT_NORMAL].loadFromFile("./textures/point-normal.png");
-	textures[TextureResourceType::POINT_HOVER].loadFromFile("./textures/point-hover.png");
+	textures[TextureResourceType::POINT_HOVERED].loadFromFile("./textures/point-hover.png");
 	textures[TextureResourceType::POINT_PRESSED].loadFromFile("./textures/point-pressed.png");
 	textures[TextureResourceType::POINT_DISABLED].loadFromFile("./textures/point-pressed.png");
 	textures[TextureResourceType::COIN_WHITE_NORMAL].loadFromFile("./textures/coin1.png");

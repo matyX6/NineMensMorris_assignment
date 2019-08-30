@@ -89,6 +89,34 @@ bool Button::isJustPressed()
 	return justPressed;
 }
 
+void Button::setCentered(bool value)
+{
+	centered = value;
+	if (centered)
+	{
+		rect.setOrigin(sf::Vector2f(size.x * 0.5, size.y*0.5));
+	}
+	else
+	{
+		rect.setOrigin(sf::Vector2f(0.0f, 0.0f));
+	}
+}
+
+void Button::disable()
+{
+	setPressState(PressState::DISABLED);
+}
+
+void Button::enable()
+{
+	setPressState(PressState::NORMAL);
+}
+
+bool Button::isEnabled()
+{
+	return (pressState != PressState::DISABLED);
+}
+
 void Button::updateMouseStates()
 {
 	justPressed = false;

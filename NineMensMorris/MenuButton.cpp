@@ -7,9 +7,10 @@ MenuButton::MenuButton()
 	texturePressed = &Resources::get().texture(TextureResourceType::BUTTON_PRESSED);
 
 	setSize(sf::Vector2f(120.0f, 60.0f));
-	setPressState(PressState::NORMAL);
 	text.setFont(Resources::get().font(FontResourceType::MAIN));
 	text.setCharacterSize(16);
+
+	setPressState(PressState::NORMAL);
 }
 
 void MenuButton::draw(sf::RenderWindow &window)

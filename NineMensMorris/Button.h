@@ -25,6 +25,8 @@ protected:
 
 	PressState pressState = PressState::NORMAL;
 
+	bool centered = false;
+
 	bool justPressed = false;
 
 	bool lastMousePressed = false;
@@ -52,4 +54,10 @@ public:
 	bool isMousePressed();
 
 	bool isJustPressed();
+
+	void setCentered(bool value);
+
+	void disable();
+	void enable();
+	bool isEnabled();
 };
