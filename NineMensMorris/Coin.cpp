@@ -1,13 +1,14 @@
 #include "Coin.h"
+
 #include "Point.h"
 
 Coin::Coin(int playerIndex, int n, sf::Vector2f position)
 {
 	background.setSize(sf::Vector2f(30.0f, 30.0f));
 	background.setOrigin(sf::Vector2f(15.0f, 15.0f));
-	textureSelected.setSize(sf::Vector2f(60.f, 60.0f));
+	textureSelected.setSize(sf::Vector2f(60.0f, 60.0f));
 	textureSelected.setOrigin(sf::Vector2f(30.0f, 30.0f));
-	background.setTexture(&Resources::get().texture(TextureResourceType::COIN_WHITE));
+	background.setTexture(&Resources::get().texture(TextureResourceType::COIN_WHITE_NORMAL));
 	textureSelected.setTexture(&Resources::get().texture(TextureResourceType::COIN_SELECTED));
 	soundRemoved.setBuffer(Resources::get().sound(SoundResourceType::COIN_REMOVED));
 
@@ -17,41 +18,85 @@ Coin::Coin(int playerIndex, int n, sf::Vector2f position)
 	homePosition = position;
 
 	state = CoinState::UNPLACED;
+	pressState = PressState::NORMAL;
 }
 
 void Coin::update(sf::RenderWindow & window)
 {
-	// selected check
-	if (!disabled) 
-	{
-		bool newSelectToggler = false;
-		sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-		justPressed = false;
-		sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
-		if (background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat))) 
-		{
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) 
-			{
-				newSelectToggler = true;
-			}
-		}
+	justPressed = false;
 
-		if (selectToggler != newSelectToggler)
+	// get mouse state
+	justMousePressed = false;
+	justMouseReleased = false;
+	if (lastMousePressed != isMousePressed()) 
+	{
+		if (lastMousePressed == false) { justMousePressed = true; }
+		else { justMouseReleased = true; }
+		lastMousePressed = isMousePressed();
+	}
+
+	// press states
+	switch (pressState)
+	{
+	case PressState::NORMAL:
+		if (isMouseOver(window)) 
 		{
-			selectToggler = newSelectToggler;
-			if (selectToggler) 
+			if (justMousePressed) 
 			{
-				selected = !selected;
-				justPressed = true;
+				pressState = PressState::PRESSED;
+				updateBackground();
+			}
+			else 
+			{
+				if (!isMousePressed()) 
+				{
+					pressState = PressState::HOVER;
+					updateBackground();
+				}
 			}
 		}
+		break;
+	case PressState::HOVER:
+		if (justMousePressed) 
+		{
+			pressState = PressState::PRESSED;
+			updateBackground();
+		}
+		else 
+		{
+			if (!isMouseOver(window)) 
+			{
+				pressState = PressState::NORMAL;
+				updateBackground();
+			}
+		}
+		break;
+	case PressState::PRESSED:
+		if (!isMouseOver(window)) 
+		{
+			pressState = PressState::NORMAL;
+			updateBackground();
+		}
+		else 
+		{
+			if (justMouseReleased) 
+			{
+				pressState = PressState::NORMAL;
+				updateBackground();
+				justPressed = true;
+				selected = !selected;
+			}
+		}
+		break;
+	case PressState::DISABLED:
+		break;
 	}
 }
 
 void Coin::draw(sf::RenderWindow & window)
 {
 	window.draw(background);
-	if (selected)
+	if (selected) 
 	{
 		window.draw(textureSelected);
 	}
@@ -74,6 +119,60 @@ bool Coin::isJustPressed()
 	return justPressed;
 }
 
+void Coin::updateBackground()
+{
+	if (playerIndex == 0) 
+	{
+		switch (pressState)
+		{
+		case PressState::NORMAL:
+			setBackground(Resources::get().texture(TextureResourceType::COIN_WHITE_NORMAL));
+			break;
+		case PressState::HOVER:
+			setBackground(Resources::get().texture(TextureResourceType::COIN_WHITE_HOVER));
+			break;
+		case PressState::PRESSED:
+			setBackground(Resources::get().texture(TextureResourceType::COIN_WHITE_PRESSED));
+			break;
+		case PressState::DISABLED:
+			if (state == CoinState::UNPLACED) 
+			{
+				setBackground(Resources::get().texture(TextureResourceType::COIN_WHITE_NORMAL));
+			}
+			else 
+			{
+				setBackground(Resources::get().texture(TextureResourceType::COIN_WHITE_DISABLED));
+			}
+			break;
+		}
+	}
+	else 
+	{
+		switch (pressState)
+		{
+		case PressState::NORMAL:
+			setBackground(Resources::get().texture(TextureResourceType::COIN_BLACK_NORMAL));
+			break;
+		case PressState::HOVER:
+			setBackground(Resources::get().texture(TextureResourceType::COIN_BLACK_HOVER));
+			break;
+		case PressState::PRESSED:
+			setBackground(Resources::get().texture(TextureResourceType::COIN_BLACK_PRESSED));
+			break;
+		case PressState::DISABLED:
+			if (state == CoinState::UNPLACED) 
+			{
+				setBackground(Resources::get().texture(TextureResourceType::COIN_BLACK_NORMAL));
+			}
+			else 
+			{
+				setBackground(Resources::get().texture(TextureResourceType::COIN_BLACK_DISABLED));
+			}
+			break;
+		}
+	}
+}
+
 void Coin::setBackground(sf::Texture & texture)
 {
 	background.setTexture(&texture);
@@ -81,17 +180,19 @@ void Coin::setBackground(sf::Texture & texture)
 
 void Coin::enable()
 {
-	disabled = false;
+	pressState = PressState::NORMAL;
+	updateBackground();
 }
 
 void Coin::disable()
 {
-	disabled = true;
+	pressState = PressState::DISABLED;
+	updateBackground();
 }
 
 bool Coin::isEnabled()
 {
-	return !disabled;
+	return pressState != PressState::DISABLED;
 }
 
 void Coin::select()
@@ -151,6 +252,7 @@ CoinState Coin::getState()
 void Coin::setState(CoinState state)
 {
 	this->state = state;
+	updateBackground();
 }
 
 void Coin::linkPoint(Point * point)
@@ -173,6 +275,18 @@ bool Coin::hasLinkedPoint()
 	return (linkedPoint != nullptr);
 }
 
+bool Coin::isMouseOver(sf::RenderWindow & window)
+{
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+	sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
+	return background.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePositionFloat));
+}
+
+bool Coin::isMousePressed()
+{
+	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+}
+
 void Coin::setPlayerIndex(int playerIndex)
 {
 	this->playerIndex = playerIndex;
@@ -180,13 +294,12 @@ void Coin::setPlayerIndex(int playerIndex)
 	switch (playerIndex)
 	{
 	case 0: // white
-		background.setTexture(&Resources::get().texture(TextureResourceType::COIN_WHITE));
+		background.setTexture(&Resources::get().texture(TextureResourceType::COIN_WHITE_NORMAL));
 		break;
 	case 1: // black
-		background.setTexture(&Resources::get().texture(TextureResourceType::COIN_BLACK));
+		background.setTexture(&Resources::get().texture(TextureResourceType::COIN_BLACK_NORMAL));
 		break;
 	default:
 		break;
 	}
 }
-

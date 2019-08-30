@@ -1,14 +1,19 @@
 #pragma once
 #include "Resources.h"
-#include <iostream>
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
-enum class CoinState
+enum class CoinState 
 {
 	UNPLACED,
 	PLACED,
-	REMOVED
-}; 
+	REMOVED,
+};
+
+enum class PressState 
+{
+	NORMAL, HOVER, PRESSED, DISABLED
+};
 
 class Point;
 
@@ -18,16 +23,20 @@ private:
 	int playerIndex = -1;
 	int n = -1;
 	CoinState state;
+	PressState pressState;
 	sf::Vector2f position;
 	sf::Vector2f homePosition;
 	sf::RectangleShape background;
 	sf::RectangleShape textureSelected;
 	sf::Sound soundRemoved;
-	bool justPressed = false;
+	Point *linkedPoint = nullptr;
 	bool selected = false;
 	bool selectToggler = false;
-	bool disabled = true;
-	Point *linkedPoint = nullptr;
+
+	bool justPressed = false;
+	bool lastMousePressed = false;
+	bool justMousePressed = false;
+	bool justMouseReleased = false;
 
 	void setPlayerIndex(int playerIndex);
 
@@ -35,6 +44,7 @@ public:
 	Coin(int n, int playerIndex, sf::Vector2f position);
 	void update(sf::RenderWindow &window);
 	void draw(sf::RenderWindow &window);
+
 	void setPosition(sf::Vector2f position);
 	sf::Vector2f getPosition();
 	void goHome();
@@ -45,7 +55,6 @@ public:
 	void select();
 	void deselect();
 	bool isSelected();
-	bool isJustPressed();
 	int getPlayerIndex();
 	void reset();
 	void remove();
@@ -56,5 +65,10 @@ public:
 	Point *getLinkedPoint();
 	void unlinkPoint();
 	bool hasLinkedPoint();
+
+	bool isMouseOver(sf::RenderWindow &window);
+	bool isMousePressed();
+	bool isJustPressed();
+	void updateBackground();
 };
 

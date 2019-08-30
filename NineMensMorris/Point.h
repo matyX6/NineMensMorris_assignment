@@ -18,10 +18,11 @@ private:
 	std::vector<Point *> connectedPoints;
 	sf::RectangleShape background;
 	PointState state;
-	bool justPressed;
 	sf::Sound soundPressed;
-	bool disabled = true;
 	Coin *linkedCoin = nullptr;
+	bool disabled = true;
+
+	bool justPressed;
 	bool lastMousePressed = false;
 	bool justMousePressed = false;
 	bool justMouseReleased = false;
@@ -33,8 +34,6 @@ public:
 	int getId();
 	void connectTo(Point &point);
 	void setPosition(sf::Vector2f position);
-	bool isJustPressed();
-	void updateBackground();
 	void setBackground(sf::Texture &texture);
 	void enable();
 	void disable();
@@ -48,6 +47,9 @@ public:
 	bool hasLinkedCoin();
 	void enableFreeConnectedPoints();
 	void printConnections();
+
 	bool isMouseOver(sf::RenderWindow &window);
 	bool isMousePressed();
+	bool isJustPressed();
+	void updateBackground();
 };
