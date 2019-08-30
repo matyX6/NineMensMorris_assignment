@@ -47,7 +47,7 @@ public:
 	void setSize(sf::Vector2f size);
 	sf::Vector2f getSize();
 	void setTexture(sf::Texture &texture);
-	void updateBackground();
+	virtual void updateBackground();
 
 	void setPressState(PressState state);
 	bool isMouseOver(sf::RenderWindow &window);

@@ -4,8 +4,8 @@
 #include <string>
 
 
-Game::Game()
-	: board(sf::Vector2f(100.0f, 50.0f))
+Game::Game(): 
+	board(sf::Vector2f(100.0f, 50.0f))
 {
 	background.setSize(sf::Vector2f(600.0f, 600.0f));
 	setBackground(Resources::get().texture(TextureResourceType::BACKGROUND));
@@ -23,8 +23,8 @@ Game::Game()
 	state = GameState::GAMEOVER;
 
 	textPlayer.setPosition(sf::Vector2f(300.0f, 530.0f));
-	textStatus.setPosition(sf::Vector2f(300.0f, 570.0f));
 	textPlayer.setText("");
+	textStatus.setPosition(sf::Vector2f(300.0f, 570.0f));
 	textStatus.setText("");
 }
 

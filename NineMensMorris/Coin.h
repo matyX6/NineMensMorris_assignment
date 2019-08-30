@@ -1,5 +1,6 @@
 #pragma once
 #include "Resources.h"
+#include "Button.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -10,35 +11,24 @@ enum class CoinState
 	REMOVED,
 };
 
-enum class PressState2 
-{
-	NORMAL, HOVER, PRESSED, DISABLED
-};
-
 class Point;
 
-class Coin
+class Coin : public Button
 {
 private:
 	int playerIndex = -1;
 	int n = -1;
-	CoinState state;
-	PressState2 pressState;
-	sf::Vector2f position;
+	sf::Texture *textureNormal2;
+	sf::Texture *textureHovered2;
+	sf::Texture *texturePressed2;
+	sf::Texture *textureDisabled2;
+	CoinState coinState;
 	sf::Vector2f homePosition;
-	sf::RectangleShape background;
-	sf::RectangleShape textureSelected;
 	sf::Sound soundRemoved;
+	sf::RectangleShape rectSelected;
+
 	Point *linkedPoint = nullptr;
 	bool selected = false;
-	bool selectToggler = false;
-
-	bool justPressed = false;
-	bool lastMousePressed = false;
-	bool justMousePressed = false;
-	bool justMouseReleased = false;
-
-	void setPlayerIndex(int playerIndex);
 
 public:
 	Coin(int n, int playerIndex, sf::Vector2f position);
@@ -46,29 +36,26 @@ public:
 	void draw(sf::RenderWindow &window);
 
 	void setPosition(sf::Vector2f position);
-	sf::Vector2f getPosition();
-	void goHome();
-	void setBackground(sf::Texture &texture);
-	void enable();
-	void disable();
-	bool isEnabled();
+
 	void select();
 	void deselect();
 	bool isSelected();
+
+	void setPlayerIndex(int playerIndex);
 	int getPlayerIndex();
-	void reset();
+
 	void remove();
 	bool isRemoved();
-	CoinState getState();
-	void setState(CoinState state);
-	void linkPoint(Point *point);
-	Point *getLinkedPoint();
-	void unlinkPoint();
-	bool hasLinkedPoint();
 
-	bool isMouseOver(sf::RenderWindow &window);
-	bool isMousePressed();
-	bool isJustPressed();
+	void setCoinState(CoinState state);
+	CoinState getCoinState();
+
+	Point *getLinkedPoint();
+	bool hasLinkedPoint();
+	void linkPoint(Point *point);
+	void unlinkPoint();
+
+	void reset();
+
 	void updateBackground();
 };
-

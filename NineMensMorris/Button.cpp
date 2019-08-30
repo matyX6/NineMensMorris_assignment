@@ -94,7 +94,7 @@ void Button::setCentered(bool value)
 	centered = value;
 	if (centered)
 	{
-		rect.setOrigin(sf::Vector2f(size.x * 0.5, size.y*0.5));
+		rect.setOrigin(sf::Vector2f(size.x * 0.5f, size.y * 0.5f));
 	}
 	else
 	{

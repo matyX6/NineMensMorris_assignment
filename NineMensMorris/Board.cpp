@@ -23,20 +23,6 @@ void Board::update(sf::RenderWindow & window)
 			justSelectedPoint = point;
 		}
 	}
-	/*for (auto point : points) {
-		if (point->isJustPressed())
-		{
-			justSelectedPoint = point;
-			if (selectedCoin != nullptr) {
-				selectedCoin->setPosition(point->getPosition());
-				point->linkCoin(selectedCoin);
-				selectedCoin->deselect();
-				selectedCoin->setState(CoinState::PLACED);
-				selectedCoin = nullptr;
-				justPlacedCoin = true;
-			}
-		}
-	}*/
 
 	// check coin selects
 	justSelectedCoin = nullptr;
@@ -226,8 +212,8 @@ void Board::setup()
 	// create, place, and instance coins
 	for (int i = 0; i < 9; i++) {
 		Coin *w = new Coin(0, i, sf::Vector2f(50.0f, 140.0f + i * 20.0f));
-		Coin *b = new Coin(1, i, sf::Vector2f(550.0f, 140.0f + i * 20.0f));
 		coins.push_back(w);
+		Coin *b = new Coin(1, i, sf::Vector2f(550.0f, 140.0f + i * 20.0f));
 		coins.push_back(b);
 	}
 }
@@ -264,7 +250,7 @@ void Board::selectUnplacedCoin(int playerIndex)
 {
 	for (int i = coins.size() - 1; i >= 0; i--)
 	{
-		if (coins[i]->getPlayerIndex() == playerIndex && coins[i]->getState() == CoinState::UNPLACED) 
+		if (coins[i]->getPlayerIndex() == playerIndex && coins[i]->getCoinState() == CoinState::UNPLACED) 
 		{
 			coins[i]->select();
 			selectedCoin = coins[i];
@@ -277,7 +263,7 @@ bool Board::hasUnplacedCoin()
 {
 	for (auto coin : coins) 
 	{
-		if (coin->getState() == CoinState::UNPLACED) 
+		if (coin->getCoinState() == CoinState::UNPLACED) 
 		{
 			return true;
 		}
@@ -521,7 +507,7 @@ void Board::placeSelectedCoin(Point * point)
 
 	// cleanup
 	selectedCoin->deselect();
-	selectedCoin->setState(CoinState::PLACED);
+	selectedCoin->setCoinState(CoinState::PLACED);
 	selectedCoin = nullptr;
 	point->disable();
 	justPlacedCoin = true;
@@ -537,7 +523,7 @@ int Board::getNumberOfPlayerUnremovedCoins(int playerIndex)
 	int count = 0;
 	for (auto coin : coins)
 	{
-		if ((coin->getPlayerIndex() == playerIndex) && (coin->getState() != CoinState::REMOVED))
+		if ((coin->getPlayerIndex() == playerIndex) && (coin->getCoinState() != CoinState::REMOVED))
 		{
 			count++;
 		}

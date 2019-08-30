@@ -24,16 +24,17 @@ void Resources::loadAllResources()
 	textures[TextureResourceType::POINT_PRESSED].loadFromFile("./textures/point-pressed.png");
 	textures[TextureResourceType::POINT_DISABLED].loadFromFile("./textures/point-pressed.png");
 	textures[TextureResourceType::COIN_WHITE_NORMAL].loadFromFile("./textures/coin1.png");
-	textures[TextureResourceType::COIN_WHITE_HOVER].loadFromFile("./textures/coin1-hover.png");
+	textures[TextureResourceType::COIN_WHITE_HOVERED].loadFromFile("./textures/coin1-hover.png");
 	textures[TextureResourceType::COIN_WHITE_PRESSED].loadFromFile("./textures/coin1-disabled.png");
 	textures[TextureResourceType::COIN_WHITE_DISABLED].loadFromFile("./textures/coin1-disabled.png");
 	textures[TextureResourceType::COIN_BLACK_NORMAL].loadFromFile("./textures/coin2.png");
-	textures[TextureResourceType::COIN_BLACK_HOVER].loadFromFile("./textures/coin2-hover.png");
+	textures[TextureResourceType::COIN_BLACK_HOVERED].loadFromFile("./textures/coin2-hover.png");
 	textures[TextureResourceType::COIN_BLACK_PRESSED].loadFromFile("./textures/coin2-disabled.png");
 	textures[TextureResourceType::COIN_BLACK_DISABLED].loadFromFile("./textures/coin2-disabled.png");
 	textures[TextureResourceType::COIN_SELECTED].loadFromFile("./textures/coin-selected.png");
 
 	sounds[SoundResourceType::BUTTON_PRESSED].loadFromFile("./audio/button-pressed.wav");
+	//sounds[SoundResourceType::BUTTON_HOVERED].loadFromFile("");
 	sounds[SoundResourceType::COIN_REMOVED].loadFromFile("./audio/coin-removed.wav");
 
 	fonts[FontResourceType::MAIN].loadFromFile("./fonts/Splatch.ttf");
