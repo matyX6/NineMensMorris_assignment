@@ -19,10 +19,11 @@ int main()
 
 	Game game;
 
+	sf::Event evnt;
+
 	while (window.isOpen())
 	{
 		//events
-		sf::Event evnt;
 		while (window.pollEvent(evnt))
 		{
 			if (evnt.type == sf::Event::Closed)

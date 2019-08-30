@@ -211,10 +211,8 @@ void Board::setup()
 
 	// create, place, and instance coins
 	for (int i = 0; i < 9; i++) {
-		Coin *w = new Coin(0, i, sf::Vector2f(50.0f, 140.0f + i * 20.0f));
-		coins.push_back(w);
-		Coin *b = new Coin(1, i, sf::Vector2f(550.0f, 140.0f + i * 20.0f));
-		coins.push_back(b);
+		coins.push_back(new Coin(0, i, sf::Vector2f(50.0f, 140.0f + i * 20.0f)));
+		coins.push_back(new Coin(1, i, sf::Vector2f(550.0f, 140.0f + i * 20.0f)));
 	}
 }
 
@@ -413,11 +411,11 @@ void Board::deselectAllCoins()
 	}
 }
 
-void Board::enablePlayerCoins(int playerIndex)
+void Board::enablePlayerPlacedCoins(int playerIndex)
 {
 	for (auto coin : coins) 
 	{
-		if (coin->getPlayerIndex() == playerIndex)
+		if (coin->getPlayerIndex() == playerIndex && coin->getCoinState() == CoinState::PLACED)
 		{
 			coin->enable();
 		}

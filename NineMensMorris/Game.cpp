@@ -11,14 +11,8 @@ Game::Game():
 	setBackground(Resources::get().texture(TextureResourceType::BACKGROUND));
 
 	// creating menu buttons
-	MenuButton *b1 = new MenuButton();
-	b1->setPosition(sf::Vector2f(20.0f, 520.0f));
-	b1->setText("RESTART");
-	buttons.push_back(b1);
-	MenuButton *b2 = new MenuButton();
-	b2->setPosition(sf::Vector2f(460.0f, 520.0f));
-	b2->setText("QUIT");
-	buttons.push_back(b2);
+	buttons.push_back(new MenuButton(sf::Vector2f(20.0f, 520.0f), "RESTART"));
+	buttons.push_back(new MenuButton(sf::Vector2f(460.0f, 520.0f), "QUIT"));
 
 	state = GameState::GAMEOVER;
 
@@ -46,7 +40,7 @@ void Game::update(sf::RenderWindow &window)
 				// change to REMOVE state
 				board.selectPlayerLineCoins(currentPlayerIndex);
 				board.disableAllPoints();
-				board.enablePlayerCoins(1 - currentPlayerIndex);
+				board.enablePlayerPlacedCoins(1 - currentPlayerIndex);
 				board.disableLinesWithPlayerIndex(currentPlayerIndex);
 				textStatus.setText("REMOVE ENEMY COIN");
 				state = GameState::REMOVING;
@@ -67,7 +61,7 @@ void Game::update(sf::RenderWindow &window)
 				// all done, proceed to MOVING state
 				board.disableAllPoints();
 				advanceCurrentPlayerIndex();
-				board.enablePlayerCoins(currentPlayerIndex);
+				board.enablePlayerPlacedCoins(currentPlayerIndex);
 				board.setSelectedCoin(nullptr);
 				updatePlayerText();
 				textStatus.setText("SELECT AND MOVE COIN");
@@ -85,7 +79,7 @@ void Game::update(sf::RenderWindow &window)
 				board.getSelectedCoin()->deselect();
 				board.setSelectedCoin(nullptr);
 				board.disableAllPoints();
-				board.enablePlayerCoins(currentPlayerIndex);
+				board.enablePlayerPlacedCoins(currentPlayerIndex);
 				updatePlayerText();
 				textStatus.setText("SELECT AND MOVE COIN");
 			}
@@ -120,7 +114,7 @@ void Game::update(sf::RenderWindow &window)
 					// change to REMOVE state
 					board.selectPlayerLineCoins(currentPlayerIndex);
 					board.disableAllPoints();
-					board.enablePlayerCoins(1 - currentPlayerIndex);
+					board.enablePlayerPlacedCoins(1 - currentPlayerIndex);
 					board.disableLinesWithPlayerIndex(currentPlayerIndex);
 					textStatus.setText("REMOVE ENEMY COIN");
 					state = GameState::REMOVING;
@@ -128,7 +122,7 @@ void Game::update(sf::RenderWindow &window)
 				}
 
 				advanceCurrentPlayerIndex();
-				board.enablePlayerCoins(currentPlayerIndex);
+				board.enablePlayerPlacedCoins(currentPlayerIndex);
 
 				updatePlayerText();
 				textStatus.setText("SELECT AND MOVE COIN");
@@ -175,7 +169,7 @@ void Game::update(sf::RenderWindow &window)
 				//we are not placing coins, go to moving state
 				board.disableAllCoins();
 				board.unlinkDisabledCoins();
-				board.enablePlayerCoins(currentPlayerIndex);
+				board.enablePlayerPlacedCoins(currentPlayerIndex);
 				board.refreshLines();
 				textStatus.setText("SELECT AND MOVE COIN");
 				state = GameState::MOVING;

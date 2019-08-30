@@ -5,12 +5,24 @@ MenuButton::MenuButton()
 	textureNormal = &Resources::get().texture(TextureResourceType::BUTTON_NORMAL);
 	textureHovered = &Resources::get().texture(TextureResourceType::BUTTON_HOVERED);
 	texturePressed = &Resources::get().texture(TextureResourceType::BUTTON_PRESSED);
-
 	setSize(sf::Vector2f(120.0f, 60.0f));
 	text.setFont(Resources::get().font(FontResourceType::MAIN));
 	text.setCharacterSize(16);
-
 	setPressState(PressState::NORMAL);
+}
+
+MenuButton::MenuButton(sf::Vector2f position, sf::String text)
+{
+	textureNormal = &Resources::get().texture(TextureResourceType::BUTTON_NORMAL);
+	textureHovered = &Resources::get().texture(TextureResourceType::BUTTON_HOVERED);
+	texturePressed = &Resources::get().texture(TextureResourceType::BUTTON_PRESSED);
+	setSize(sf::Vector2f(120.0f, 60.0f));
+	this->text.setFont(Resources::get().font(FontResourceType::MAIN));
+	this->text.setCharacterSize(16);
+	setPressState(PressState::NORMAL);
+
+	setPosition(position);
+	setText(text);
 }
 
 void MenuButton::draw(sf::RenderWindow &window)

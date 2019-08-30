@@ -12,6 +12,7 @@ private:
 
 public:
 	MenuButton();
+	MenuButton(sf::Vector2f position, sf::String text);
 	void draw(sf::RenderWindow &window);
 
 	void setText(sf::String string);

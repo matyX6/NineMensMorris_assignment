@@ -40,7 +40,7 @@ public:
 	int getLinePlayerIndex();
 	void deselectCoin();
 	void deselectAllCoins();
-	void enablePlayerCoins(int playerIndex);
+	void enablePlayerPlacedCoins(int playerIndex);
 	void disableAllCoins();
 	void enableRemainingPoints();
 	void unlinkDisabledCoins();
