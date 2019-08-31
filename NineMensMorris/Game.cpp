@@ -11,7 +11,7 @@ Game::Game():
 	setBackground(Resources::get().texture(TextureResourceType::BACKGROUND));
 
 	// creating menu buttons
-	buttons.push_back(new MenuButton(sf::Vector2f(20.0f, 520.0f), "RESTART"));
+	buttons.push_back(new MenuButton(sf::Vector2f(20.0f, 520.0f), "START"));
 	buttons.push_back(new MenuButton(sf::Vector2f(460.0f, 520.0f), "QUIT"));
 
 	state = GameState::GAMEOVER;
@@ -101,8 +101,17 @@ void Game::update(sf::RenderWindow &window, int delta)
 				board.setSelectedCoin(board.getJustSelectedCoin());
 				board.getJustSelectedCoin()->select();
 
-				//enable neighbouring points
-				board.getJustSelectedCoin()->getLinkedPoint()->enableFreeConnectedPoints();
+				if (board.getNumberOfPlayerUnremovedCoins(currentPlayerIndex) == minNumberOfCoins)
+				{
+					//enable all remaining points
+					board.enableRemainingPoints();
+				}
+				else
+				{
+					//enable neighbouring points
+					board.getJustSelectedCoin()->getLinkedPoint()->enableFreeConnectedPoints();
+				}
+
 				updatePlayerText();
 				textStatus.setText("MOVE YOUR COIN");
 			}
@@ -154,7 +163,7 @@ void Game::update(sf::RenderWindow &window, int delta)
 			{
 				board.disableAllCoins();
 				updatePlayerText();
-				textStatus.setText("YOU WIN");
+				textStatus.setText("WINS");
 				state = GameState::GAMEOVER;
 				return;
 			}
@@ -206,6 +215,11 @@ void Game::update(sf::RenderWindow &window, int delta)
 		else if (text == "QUIT") 
 		{
 			window.close();
+		}
+		else if (text == "START")
+		{
+			button->setText("RESTART");
+			reset();
 		}
 	}
 

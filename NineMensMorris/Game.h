@@ -16,6 +16,7 @@ class Game
 {
 private:
 	const int numberOfCoinsPerPlayer = 9;
+	const int minNumberOfCoins = 3;
 
 	Board board;
 	std::vector<MenuButton*> buttons;
