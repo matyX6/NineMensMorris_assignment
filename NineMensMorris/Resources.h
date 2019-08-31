@@ -30,6 +30,8 @@ enum class SoundResourceType
 	BUTTON_PRESSED,
 	BUTTON_HOVERED,
 	COIN_REMOVED,
+	SOUND_MILL,
+	SOUND_WIN
 };
 
 enum class FontResourceType

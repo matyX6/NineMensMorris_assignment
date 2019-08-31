@@ -31,9 +31,12 @@ private:
 	int currentPlayerIndex = -1;
 	GameState state;
 	sf::RectangleShape background;
+	sf::Sound soundMill;
+	sf::Sound soundWin;
 
 public:
 	Game();
+	void SetInGameText();
 	void update(sf::RenderWindow &window, int delta);
 	void draw(sf::RenderWindow &window);
 

@@ -34,8 +34,9 @@ void Resources::loadAllResources()
 	textures[TextureResourceType::COIN_SELECTED].loadFromFile("./textures/coin-selected.png");
 
 	sounds[SoundResourceType::BUTTON_PRESSED].loadFromFile("./audio/button-pressed.wav");
-	//sounds[SoundResourceType::BUTTON_HOVERED].loadFromFile("");
 	sounds[SoundResourceType::COIN_REMOVED].loadFromFile("./audio/coin-removed.wav");
+	sounds[SoundResourceType::SOUND_MILL].loadFromFile("./audio/sound-mill.wav");
+	sounds[SoundResourceType::SOUND_WIN].loadFromFile("./audio/sound-win.wav");
 
 	fonts[FontResourceType::MAIN].loadFromFile("./fonts/Splatch.ttf");
 

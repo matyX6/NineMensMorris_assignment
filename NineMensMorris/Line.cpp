@@ -12,7 +12,6 @@ bool Line::isCompleted()
 	for (auto point : points) 
 	{
 		if (point->getLinkedCoin() == nullptr) { return false; }
-
 		int coinPlayerIndex = point->getLinkedCoin()->getPlayerIndex();
 		if (playerIndex == -1) { playerIndex = coinPlayerIndex; }
 		else if (playerIndex != coinPlayerIndex) { return false; }

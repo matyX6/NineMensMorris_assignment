@@ -16,6 +16,16 @@ Game::Game():
 
 	state = GameState::GAMEOVER;
 
+	//sounds
+	soundMill.setBuffer(Resources::get().sound(SoundResourceType::SOUND_MILL));
+	soundWin.setBuffer(Resources::get().sound(SoundResourceType::SOUND_WIN));
+
+	//text
+	SetInGameText();
+}
+
+void Game::SetInGameText()
+{
 	textPlayer.setPosition(sf::Vector2f(300.0f, 530.0f));
 	textPlayer.setText("");
 	textStatus.setPosition(sf::Vector2f(300.0f, 570.0f));
@@ -54,6 +64,7 @@ void Game::update(sf::RenderWindow &window, int delta)
 				board.disableLinesWithPlayerIndex(currentPlayerIndex);
 				textStatus.setText("REMOVE ENEMY COIN");
 				state = GameState::REMOVING;
+				soundMill.play();
 				return;
 			}
 
@@ -137,6 +148,7 @@ void Game::update(sf::RenderWindow &window, int delta)
 					board.disableLinesWithPlayerIndex(currentPlayerIndex);
 					textStatus.setText("REMOVE ENEMY COIN");
 					state = GameState::REMOVING;
+					soundMill.play();
 					return;
 				}
 
@@ -165,6 +177,7 @@ void Game::update(sf::RenderWindow &window, int delta)
 				updatePlayerText();
 				textStatus.setText("WINS");
 				state = GameState::GAMEOVER;
+				soundWin.play();
 				return;
 			}
 
