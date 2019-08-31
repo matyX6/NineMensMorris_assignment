@@ -3,13 +3,13 @@
 Text::Text()
 {
 	this->text.setFont(Resources::get().font(FontResourceType::MAIN));
-	this->text.setCharacterSize(16);
+	this->text.setCharacterSize(15);
 }
 
 Text::Text(sf::Vector2f position, sf::String text)
 {
 	this->text.setFont(Resources::get().font(FontResourceType::MAIN));
-	this->text.setCharacterSize(16);
+	this->text.setCharacterSize(15);
 
 	setPosition(position);
 	setText(text);

@@ -289,8 +289,6 @@ void Board::reset()
 
 	enableAllPoints();
 	selectedCoin = nullptr;
-
-	std::cout << "Board reset!\n";
 }
 
 bool Board::hasJustPlacedCoin()

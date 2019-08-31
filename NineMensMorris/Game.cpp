@@ -20,6 +20,16 @@ Game::Game():
 	textPlayer.setText("");
 	textStatus.setPosition(sf::Vector2f(300.0f, 570.0f));
 	textStatus.setText("");
+
+	textPlayer1Score.setPosition(sf::Vector2f(50.0f, 60.0f));
+	textPlayer1Score.setText("");
+	textPlayer2Score.setPosition(sf::Vector2f(550.0f, 60.0f));
+	textPlayer2Score.setText("");
+
+	textPlayer1Label.setPosition(sf::Vector2f(60.0f, 30.0f));
+	textPlayer1Label.setText("PLAYER 1");
+	textPlayer2Label.setPosition(sf::Vector2f(540.0f, 30.0f));
+	textPlayer2Label.setText("PLAYER 2");
 }
 
 void Game::update(sf::RenderWindow &window, int delta)
@@ -139,7 +149,7 @@ void Game::update(sf::RenderWindow &window, int delta)
 			board.deselectAllCoins();
 
 			//checking for game over
-			std::cout << "Enemy coins left: " << board.getNumberOfPlayerUnremovedCoins(1 - currentPlayerIndex) << "\n";
+			updatePlayerScore(1 - currentPlayerIndex, board.getNumberOfPlayerUnremovedCoins(1 - currentPlayerIndex));
 			if (board.getNumberOfPlayerUnremovedCoins(1 - currentPlayerIndex) < 3)
 			{
 				board.disableAllCoins();
@@ -221,6 +231,10 @@ void Game::draw(sf::RenderWindow &window)
 	}
 	textPlayer.draw(window);
 	textStatus.draw(window);
+	textPlayer1Score.draw(window);
+	textPlayer2Score.draw(window);
+	textPlayer1Label.draw(window);
+	textPlayer2Label.draw(window);
 }
 
 void Game::setBackground(sf::Texture &texture)
@@ -239,6 +253,10 @@ void Game::reset()
 	state = GameState::PLACING;
 	updatePlayerText();
 	textStatus.setText("PLACE YOUR COIN");
+	textPlayer1Score.setText(std::to_string(numberOfCoinsPerPlayer));
+	textPlayer2Score.setText(std::to_string(numberOfCoinsPerPlayer));
+	textPlayer1Label.setText("PLAYER 1");
+	textPlayer2Label.setText("PLAYER 2");
 }
 
 void Game::advanceCurrentPlayerIndex()
@@ -257,5 +275,18 @@ void Game::updatePlayerText()
 	case 0: textPlayer.setText("PLAYER 1"); break;
 	case 1: textPlayer.setText("PLAYER 2"); break;
 
+	}
+}
+
+void Game::updatePlayerScore(int playerIndex, int score)
+{
+	switch (currentPlayerIndex)
+	{
+	case 0:
+		textPlayer2Score.setText(std::to_string(score));
+		break;
+	case 1:
+		textPlayer1Score.setText(std::to_string(score));
+		break;
 	}
 }

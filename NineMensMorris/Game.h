@@ -21,6 +21,10 @@ private:
 	std::vector<MenuButton*> buttons;
 	Text textPlayer;
 	Text textStatus;
+	Text textPlayer1Score;
+	Text textPlayer2Score;
+	Text textPlayer1Label;
+	Text textPlayer2Label;
 
 	const int numberOfPlayers = 2;
 	int currentPlayerIndex = -1;
@@ -36,4 +40,5 @@ public:
 	void setBackground(sf::Texture &texture);
 	void advanceCurrentPlayerIndex();
 	void updatePlayerText();
+	void updatePlayerScore(int playerIndex, int score);
 };
