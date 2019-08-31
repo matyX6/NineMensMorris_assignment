@@ -39,7 +39,7 @@ protected:
 public:
 	Button();
 	~Button();
-	void update(sf::RenderWindow &window);
+	void update(sf::RenderWindow &window, int delta);
 	void draw(sf::RenderWindow &window);
 
 	void setPosition(sf::Vector2f position);

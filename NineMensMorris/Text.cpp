@@ -15,7 +15,7 @@ Text::Text(sf::Vector2f position, sf::String text)
 	setText(text);
 }
 
-void Text::update(sf::RenderWindow & windows)
+void Text::update(sf::RenderWindow & windows, int delta)
 {
 
 }

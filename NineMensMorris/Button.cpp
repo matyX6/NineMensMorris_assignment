@@ -9,7 +9,7 @@ Button::~Button()
 {
 }
 
-void Button::update(sf::RenderWindow & window)
+void Button::update(sf::RenderWindow & window, int delta)
 {
 	updateMouseStates();
 	updatePressState(window);

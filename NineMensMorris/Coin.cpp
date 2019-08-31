@@ -31,14 +31,19 @@ Coin::Coin(int playerIndex, int n, sf::Vector2f position)
 	setPressState(PressState::DISABLED);
 }
 
-void Coin::update(sf::RenderWindow & window)
+void Coin::update(sf::RenderWindow & window, int delta)
 {
-	Button::update(window);
+	Button::update(window, delta);
 
 	if (justPressed) 
 	{
 		selected = !selected;
 	}
+
+	//smooth movement
+	float lerpWeight = 0.02f;
+	sf::Vector2f distance = targetPosition - position;
+	setPositionSmooth(getPosition() + distance * lerpWeight);
 }
 
 void Coin::draw(sf::RenderWindow & window)
@@ -55,6 +60,25 @@ void Coin::setPosition(sf::Vector2f position)
 {
 	Button::setPosition(position);
 	rectSelected.setPosition(position);
+	targetPosition = position;
+}
+
+void Coin::setPositionSmooth(sf::Vector2f position)
+{
+	Button::setPosition(position);
+	rectSelected.setPosition(position);
+}
+
+void Coin::moveTo(sf::Vector2f position, bool smooth)
+{
+	if (smooth)
+	{
+		targetPosition = position;
+	}
+	else
+	{
+		setPosition(position);
+	}
 }
 
 void Coin::updateBackground()
@@ -128,7 +152,7 @@ bool Coin::isSelected()
 
 void Coin::reset()
 {
-	setPosition(homePosition);
+	moveTo(homePosition);
 	disable();
 	deselect();
 	setCoinState(CoinState::UNPLACED);
@@ -144,7 +168,8 @@ void Coin::remove()
 {
 	disable();
 	deselect();
-	setPosition(sf::Vector2f(-1000.0f, -1000.0f));
+	//setPosition(sf::Vector2f(-1000.0f, -1000.0f));
+	moveTo(sf::Vector2f(-1000.0f, -1000.0f));
 	setCoinState(CoinState::REMOVED);
 	linkedPoint->unlinkCoin();
 	unlinkPoint();

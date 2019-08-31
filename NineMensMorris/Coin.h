@@ -26,16 +26,19 @@ private:
 	sf::Vector2f homePosition;
 	sf::Sound soundRemoved;
 	sf::RectangleShape rectSelected;
+	sf::Vector2f targetPosition;
 
 	Point *linkedPoint = nullptr;
 	bool selected = false;
 
 public:
 	Coin(int n, int playerIndex, sf::Vector2f position);
-	void update(sf::RenderWindow &window);
+	void update(sf::RenderWindow &window, int delta);
 	void draw(sf::RenderWindow &window);
 
 	void setPosition(sf::Vector2f position);
+	void setPositionSmooth(sf::Vector2f position);
+	void moveTo(sf::Vector2f position, bool smooth = true);
 
 	void select();
 	void deselect();

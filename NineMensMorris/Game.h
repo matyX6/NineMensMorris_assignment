@@ -15,20 +15,21 @@ enum class GameState
 class Game
 {
 private:
+	const int numberOfCoinsPerPlayer = 9;
+
 	Board board;
 	std::vector<MenuButton*> buttons;
 	Text textPlayer;
 	Text textStatus;
 
-	int numberOfPlayers = 2;
-	int numberOfCoinsPerPlayer = 9;
+	const int numberOfPlayers = 2;
 	int currentPlayerIndex = -1;
 	GameState state;
 	sf::RectangleShape background;
 
 public:
 	Game();
-	void update(sf::RenderWindow &window);
+	void update(sf::RenderWindow &window, int delta);
 	void draw(sf::RenderWindow &window);
 
 	void reset();

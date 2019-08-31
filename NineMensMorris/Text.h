@@ -14,7 +14,7 @@ private:
 public:
 	Text();
 	Text(sf::Vector2f position, sf::String text = "<...>");
-	void update(sf::RenderWindow &windows);
+	void update(sf::RenderWindow &windows, int delta);
 	void draw(sf::RenderWindow &window);
 
 	void setPosition(sf::Vector2f position);

@@ -1,16 +1,16 @@
 #include "Board.h"
 #include <iostream>
 
-Board::Board(sf::Vector2f position)
+Board::Board(sf::Vector2f position, int numberOfCoinsPerPlayer)
 {
 	background.setSize(sf::Vector2f(400.0f, 400.0f));
 	setBackground(Resources::get().texture(TextureResourceType::BOARD));
 	selectedCoin = nullptr;
 	setPosition(position);
-	setup();
+	setup(numberOfCoinsPerPlayer);
 }
 
-void Board::update(sf::RenderWindow & window)
+void Board::update(sf::RenderWindow & window, int delta)
 {
 	justPlacedCoin = false;
 	justSelectedCoin = nullptr;
@@ -37,11 +37,11 @@ void Board::update(sf::RenderWindow & window)
 	// update children
 	for (auto point : points) 
 	{
-		point->update(window);
+		point->update(window, delta);
 	}
 	for (auto coin : coins) 
 	{
-		coin->update(window);
+		coin->update(window, delta);
 	}
 }
 
@@ -60,7 +60,7 @@ void Board::draw(sf::RenderWindow & window)
 	}
 }
 
-void Board::setup()
+void Board::setup(int numberOfCoinsPerPlayer)
 {
 	// creating points
 	Point *p0 = new Point(0, sf::Vector2f(300.0f, 100.0f));
@@ -210,7 +210,7 @@ void Board::setup()
 			 l10, l11, l12, l13, l14, l15 };
 
 	// create, place, and instance coins
-	for (int i = 0; i < 9; i++) {
+	for (int i = 0; i < numberOfCoinsPerPlayer; i++) {
 		coins.push_back(new Coin(0, i, sf::Vector2f(50.0f, 140.0f + i * 20.0f)));
 		coins.push_back(new Coin(1, i, sf::Vector2f(550.0f, 140.0f + i * 20.0f)));
 	}
@@ -484,7 +484,7 @@ void Board::moveSelectedCoinToPoint(Point * point)
 	selectedCoin->unlinkPoint();
 
 	// move
-	selectedCoin->setPosition(point->getPosition());
+	selectedCoin->moveTo(point->getPosition());
 
 	// link
 	selectedCoin->linkPoint(point);
@@ -497,7 +497,7 @@ void Board::moveSelectedCoinToPoint(Point * point)
 void Board::placeSelectedCoin(Point * point)
 {
 	// move
-	selectedCoin->setPosition(point->getPosition());
+	selectedCoin->moveTo(point->getPosition());
 
 	// link
 	selectedCoin->linkPoint(point);

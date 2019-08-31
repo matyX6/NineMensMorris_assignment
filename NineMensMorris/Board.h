@@ -20,10 +20,10 @@ private:
 	Point *justSelectedPoint = nullptr;
 
 public:
-	Board(sf::Vector2f position);
-	void update(sf::RenderWindow &window);
+	Board(sf::Vector2f position, int numberOfCoinsPerPlayer);
+	void update(sf::RenderWindow &window, int delta);
 	void draw(sf::RenderWindow &window);
-	void setup();
+	void setup(int numberOfCoinsPerPlayer);
 	void setBackground(sf::Texture &texture);
 	void setPosition(sf::Vector2f position);
 	void disableAllPoints();

@@ -5,7 +5,7 @@
 
 
 Game::Game(): 
-	board(sf::Vector2f(100.0f, 50.0f))
+	board(sf::Vector2f(100.0f, 50.0f), numberOfCoinsPerPlayer)
 {
 	background.setSize(sf::Vector2f(600.0f, 600.0f));
 	setBackground(Resources::get().texture(TextureResourceType::BACKGROUND));
@@ -22,7 +22,7 @@ Game::Game():
 	textStatus.setText("");
 }
 
-void Game::update(sf::RenderWindow &window)
+void Game::update(sf::RenderWindow &window, int delta)
 {
 	// states
 	switch (state)
@@ -200,13 +200,13 @@ void Game::update(sf::RenderWindow &window)
 	}
 
 	//update children
-	board.update(window);
+	board.update(window, delta);
 	for (auto button : buttons) 
 	{
-		button->update(window);
+		button->update(window, delta);
 	}
-	textPlayer.update(window);
-	textStatus.update(window);
+	textPlayer.update(window, delta);
+	textStatus.update(window, delta);
 }
 
 void Game::draw(sf::RenderWindow &window)

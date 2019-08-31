@@ -20,6 +20,7 @@ int main()
 	Game game;
 
 	sf::Event evnt;
+	sf::Clock clock;
 
 	while (window.isOpen())
 	{
@@ -33,7 +34,7 @@ int main()
 		}
 
 		//updates
-		game.update(window);
+		game.update(window, clock.restart().asMilliseconds());
 
 
 		//draw
