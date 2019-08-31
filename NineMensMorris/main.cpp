@@ -15,7 +15,7 @@ int main()
 	instanceSingletons();
 	srand(static_cast<unsigned int>(time(NULL)));
 
-	sf::RenderWindow window(sf::VideoMode(600, 600), "NineMensMorris", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(1100, 600), "NineMensMorris", sf::Style::Close);
 
 	Game game;
 

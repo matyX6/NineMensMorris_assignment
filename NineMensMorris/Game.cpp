@@ -7,12 +7,12 @@
 Game::Game(): 
 	board(sf::Vector2f(100.0f, 50.0f), numberOfCoinsPerPlayer)
 {
-	background.setSize(sf::Vector2f(600.0f, 600.0f));
+	background.setSize(sf::Vector2f(1100.0f, 600.0f));
 	setBackground(Resources::get().texture(TextureResourceType::BACKGROUND));
 
 	// creating menu buttons
-	buttons.push_back(new MenuButton(sf::Vector2f(20.0f, 520.0f), "START"));
-	buttons.push_back(new MenuButton(sf::Vector2f(460.0f, 520.0f), "QUIT"));
+	buttons.push_back(new MenuButton(sf::Vector2f(765.0f, 520.0f), "START"));
+	buttons.push_back(new MenuButton(sf::Vector2f(900.0f, 520.0f), "QUIT"));
 
 	state = GameState::GAMEOVER;
 
@@ -26,9 +26,9 @@ Game::Game():
 
 void Game::SetInGameText()
 {
-	textPlayer.setPosition(sf::Vector2f(300.0f, 530.0f));
+	textPlayer.setPosition(sf::Vector2f(300.0f, 500.0f));
 	textPlayer.setText("");
-	textStatus.setPosition(sf::Vector2f(300.0f, 570.0f));
+	textStatus.setPosition(sf::Vector2f(300.0f, 540.0f));
 	textStatus.setText("");
 
 	textPlayer1Score.setPosition(sf::Vector2f(50.0f, 60.0f));
